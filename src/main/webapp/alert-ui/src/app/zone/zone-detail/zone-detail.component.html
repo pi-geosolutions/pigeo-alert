@@ -1,0 +1,32 @@
+<div *ngIf="zone">
+
+  <h2>{{ zone.name | uppercase }} Details</h2>
+  <div><span>id: </span>{{zone.id}}</div>
+  <div>
+    <label>name:
+      <input [(ngModel)]="zone.name" placeholder="name">
+    </label>
+  </div>
+</div>
+
+
+<ngeo-geometry-tool
+        allow-reset allow-modify output="field.value"
+        ngeo-geom-type="Polygon"
+        ngeo-geom-crs="EPSG:3857"
+        ngeo-geom-outputformat="json"
+        [(output)]="geom"
+        output-as-features="true"
+        [map]="map">
+</ngeo-geometry-tool>
+
+<div ngeo-map [map]="map"></div>
+
+<textarea [(ngModel)]="geom"></textarea>
+
+<button (click)="save()">save</button>
+
+<button (click)="goBack()">go back</button>
+
+
+

@@ -1,0 +1,111 @@
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {FeatureOverlayService} from "../../feature-overlay/feature-overlay.service";
+import {NgeoUtilsService} from "../../ngeo-utils.service";
+import {GeometryService} from "../geometry.service";
+
+import Map from 'ol/map.js';
+import Draw from 'ol/interaction/draw.js';
+import Modify from 'ol/interaction/modify.js';
+import DoubleClickZoom from 'ol/interaction/doubleclickzoom.js';
+import Collection from 'ol/collection.js';
+import VectorLayer from 'ol/layer/vector.js'
+
+
+@Component({
+  selector: 'ngeo-geometry-tool',
+  templateUrl: './geometry-tool.component.html',
+  styleUrls: ['./geometry-tool.component.css'],
+  inputs: [
+    'map',
+    'outputCrs: ngeo-geom-crs',
+    'outputFormat: ngeo-geom-outputformat',
+    'geomType: ngeo-geom-type'
+  ]
+})
+export class GeometryToolComponent implements OnInit {
+
+  private map: Map;
+  private geomType: string;
+  private outputCrs: string;
+  private outputFormat: string;
+  private drawInteraction: Draw;
+  private modifyInteraction: Modify;
+  private featureOverlay: VectorLayer;
+
+  @Output() outputChange = new EventEmitter();
+  @Input() output: string;
+
+  constructor(
+    private foService: FeatureOverlayService,
+    private geomService: GeometryService,
+    private ngeoUtilsService: NgeoUtilsService) { }
+
+  ngOnInit() {
+    const map = this.map;
+    this.featureOverlay = this.foService.getFeatureOverlay(map);
+    const source = this.featureOverlay.getSource();
+    const features = new Collection();
+
+    this.drawInteraction = new Draw({
+      type: this.geomType,
+      source: source
+    });
+    this.modifyInteraction = new Modify({
+      source: source
+    });
+
+    map.addInteraction(this.drawInteraction);
+    map.addInteraction(this.modifyInteraction);
+    this.drawInteraction.setActive(false);
+    this.modifyInteraction.setActive(false);
+
+    this.ngeoUtilsService.decorateInteration(this.drawInteraction);
+    this.ngeoUtilsService.decorateInteration(this.modifyInteraction);
+
+    // Disable double click zoom on drawying
+    let zoomInteraction = null;
+    map.getInteractions().forEach(function(interaction) {
+      if (interaction instanceof DoubleClickZoom) {
+        zoomInteraction = interaction;
+      }
+    });
+
+    this.drawInteraction.on('drawend', (event) => {
+      this.clearFeatures();
+      this.updateOutput(event.feature);
+
+      this.drawInteraction.active = false;
+
+      if (zoomInteraction) {
+        zoomInteraction.setActive(false);
+        setTimeout(function() {
+          zoomInteraction.setActive(true);
+        }, 251);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.map.removeInteraction(this.drawInteraction);
+    this.map.removeInteraction(this.modifyInteraction);
+  }
+
+  clearFeatures(): void {
+    this.featureOverlay.getSource().clear();
+  }
+
+  reset(): void {
+    this.clearFeatures();
+  }
+
+  private updateOutput(feature) {
+    // const feature = this.featureOverlay.getSource().getFeatures().get(0);
+    if(feature) {
+      this.output = this.geomService.printGeometryOutput(this.map, feature, {
+        crs: this.outputCrs,
+        format: this.outputFormat
+      });
+      this.outputChange.emit(this.output);
+    }
+  }
+}

@@ -1,0 +1,13 @@
+<div id="search-component">
+  <h4>Zone Search</h4>
+
+  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+
+  <ul class="search-result">
+    <li *ngFor="let zone of zones$ | async" >
+      <a routerLink="/detail/{{zone.id}}">
+        {{zone.name}}
+      </a>
+    </li>
+  </ul>
+</div>

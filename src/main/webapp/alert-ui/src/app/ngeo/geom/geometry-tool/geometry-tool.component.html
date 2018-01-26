@@ -1,0 +1,26 @@
+<div gi-btn-group class="btn-group">
+
+  <button class="btn btn-default draw-button"
+          ngeoButton
+          [(ngModel)]="drawInteraction.active">
+    <span class="fa fa-pencil"></span>&nbsp;
+    <span translate>drawGeometry</span>
+  </button>
+
+  <button class="btn btn-default modify-button"
+          ng-if="ctrl.allowModify !== undefined"
+          ng-disabled="!ctrl.features.getLength()"
+          ngeoButton
+          [(ngModel)]="modifyInteraction.active">
+    <span class="fa fa-pencil"></span>&nbsp;
+    <span translate>modifyGeometry</span>
+  </button>
+
+  <button class="btn btn-danger btn-icon reset-button" ngeoButton
+          ng-if="ctrl.allowReset !== undefined"
+          ng-disabled="!ctrl.features.getLength()"
+          ng-click="reset()">
+    <span class="fa fa-trash-o"></span>
+  </button>
+
+</div>
