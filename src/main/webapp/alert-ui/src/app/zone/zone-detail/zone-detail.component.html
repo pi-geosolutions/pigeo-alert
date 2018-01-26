@@ -2,31 +2,32 @@
 
   <h2>{{ zone.name | uppercase }} Details</h2>
   <div><span>id: </span>{{zone.id}}</div>
-  <div>
-    <label>name:
-      <input [(ngModel)]="zone.name" placeholder="name">
-    </label>
-  </div>
+  <form [formGroup]="zoneForm" novalidate>
+    <div class="form-group">
+      <label class="center-block">Name:
+        <input class="form-control" formControlName="name">
+      </label>
+    </div>
+  </form>
+
+  <ngeo-geometry-tool
+          ngeo-geom-allow-reset="true"
+          ngeo-geom-type="Polygon"
+          ngeo-geom-outputcrs="EPSG:4326"
+          ngeo-geom-outputformat="json"
+          ngeo-geom-inputformat="json"
+          output-as-features="true"
+          [(output)]="zone.geom"
+          [map]="map">
+  </ngeo-geometry-tool>
+
+  <div ngeo-map [map]="map"></div>
+
+  <textarea [(ngModel)]="zone.geom"></textarea>
+
 </div>
 
-
-<ngeo-geometry-tool
-        allow-reset allow-modify output="field.value"
-        ngeo-geom-type="Polygon"
-        ngeo-geom-crs="EPSG:3857"
-        ngeo-geom-outputformat="json"
-        [(output)]="geom"
-        output-as-features="true"
-        [map]="map">
-</ngeo-geometry-tool>
-
-<div ngeo-map [map]="map"></div>
-
-<textarea [(ngModel)]="geom"></textarea>
 
 <button (click)="save()">save</button>
 
 <button (click)="goBack()">go back</button>
-
-
-

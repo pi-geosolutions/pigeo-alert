@@ -4,10 +4,11 @@ import {NgeoUtilsService} from "../../ngeo-utils.service";
 import {GeometryService} from "../geometry.service";
 
 import Map from 'ol/map.js';
+import Feature from 'ol/feature.js';
+import Geometry from 'ol/geom/geometry.js';
 import Draw from 'ol/interaction/draw.js';
 import Modify from 'ol/interaction/modify.js';
 import DoubleClickZoom from 'ol/interaction/doubleclickzoom.js';
-import Collection from 'ol/collection.js';
 import VectorLayer from 'ol/layer/vector.js'
 
 
@@ -17,8 +18,11 @@ import VectorLayer from 'ol/layer/vector.js'
   styleUrls: ['./geometry-tool.component.css'],
   inputs: [
     'map',
-    'outputCrs: ngeo-geom-crs',
+    'allowReset: ngeo-geom-allow-reset',
+    'allowModify: ngeo-geom-allow-modify',
+    'outputCrs: ngeo-geom-outputcrs',
     'outputFormat: ngeo-geom-outputformat',
+    'intputFormat: ngeo-geom-inputformat',
     'geomType: ngeo-geom-type'
   ]
 })
@@ -28,6 +32,9 @@ export class GeometryToolComponent implements OnInit {
   private geomType: string;
   private outputCrs: string;
   private outputFormat: string;
+  private intputFormat: string;
+  private allowModify: boolean;
+  private allowReset: boolean;
   private drawInteraction: Draw;
   private modifyInteraction: Modify;
   private featureOverlay: VectorLayer;
@@ -44,7 +51,6 @@ export class GeometryToolComponent implements OnInit {
     const map = this.map;
     this.featureOverlay = this.foService.getFeatureOverlay(map);
     const source = this.featureOverlay.getSource();
-    const features = new Collection();
 
     this.drawInteraction = new Draw({
       type: this.geomType,
@@ -83,6 +89,17 @@ export class GeometryToolComponent implements OnInit {
         }, 251);
       }
     });
+
+    const geometry: Geometry = this.geomService.parseGeometryInput(map, this.output, {
+      format: this.intputFormat
+    });
+    const feature = new Feature({
+      geometry: geometry
+    });
+    feature.setId('geometry-tool-output');
+    source.addFeature(feature);
+    map.getView().fit(geometry.getExtent(), map.getSize());
+    // this.output = this.geomService.parseGeometryInput(map, this.output, {});
   }
 
   ngOnDestroy() {

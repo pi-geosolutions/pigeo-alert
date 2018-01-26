@@ -1,14 +1,17 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
-
+import { FormBuilder,  Validators, FormGroup } from '@angular/forms';
 
 import {Zone} from "../zone";
 import {ZoneService} from "../zone.service";
+
 import Map from 'ol/map.js';
 import View from 'ol/view.js';
 import TileLayer from 'ol/layer/tile.js';
 import XYZ from 'ol/source/xyz.js';
+import {Observable} from "rxjs";
+import {tap} from "rxjs/operators/tap";
 
 @Component({
   selector: 'app-zone-detail',
@@ -21,22 +24,38 @@ export class ZoneDetailComponent implements OnInit {
   map: Map;
   geom: any;
 
+  zoneForm: FormGroup;
+
   constructor(
     private route: ActivatedRoute,
     private zoneService: ZoneService,
-    private location: Location
+    private location: Location,
+    private fb: FormBuilder
+  ) {
+    this.createForm();
+  }
 
-  ) { }
+  createForm() {
+    this.zoneForm = this.fb.group({
+      name: ['', Validators.required ]
+    });
+  }
 
   ngOnInit(): void {
-    this.getZone();
+    this.getZone().subscribe(() => {
+      this.zoneForm.setValue({
+        name: this.zone.name
+      });
+    });
     this.initMap();
   }
 
-  getZone(): void {
+  getZone() {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.zoneService.getZone(id)
-      .subscribe(zone => this.zone = zone);
+    return this.zoneService.getZone(id)
+      .pipe(
+        tap(zone => this.zone = zone)
+      );
   }
 
   save(): void {
@@ -59,7 +78,8 @@ export class ZoneDetailComponent implements OnInit {
       ],
       view: new View({
         center: [0, 0],
-        zoom: 2
+        zoom: 2,
+        minResolution: 305.748113140705
       })
     });
     window['map'] = this.map;
