@@ -1,4 +1,4 @@
-export class Zone {
+export class User {
   id: number;
   name: string;
 

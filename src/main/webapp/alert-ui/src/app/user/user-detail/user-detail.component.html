@@ -1,11 +1,11 @@
-<div *ngIf="zone">
+<div *ngIf="user">
 
-  <h2>{{ zone.name | uppercase }} Details</h2>
-  <div><span>id: </span>{{zone.id}}</div>
-  <form [formGroup]="zoneForm" novalidate>
+  <h2>{{ user.name | uppercase }} Details</h2>
+  <div><span>id: </span>{{user.id}}</div>
+  <form [formGroup]="userForm" novalidate>
     <div class="form-group">
       <label class="center-block">Name:
-        <input class="form-control" formControlName="name" matInput>
+        <input class="form-control" formControlName="name">
       </label>
     </div>
   </form>
@@ -17,21 +17,15 @@
           ngeo-geom-outputformat="json"
           ngeo-geom-inputformat="json"
           output-as-features="true"
-          [(output)]="zone.geom"
+          [(output)]="user.geom"
           [map]="map">
   </ngeo-geometry-tool>
 
   <div ngeo-map [map]="map"></div>
 
-  <textarea [(ngModel)]="zone.geom"></textarea>
+  <textarea [(ngModel)]="user.geom"></textarea>
 
 </div>
-
-<mat-list>
-  <mat-list-item> Pepper </mat-list-item>
-  <mat-list-item> Salt </mat-list-item>
-  <mat-list-item> Paprika </mat-list-item>
-</mat-list>
 
 <button (click)="save()">save</button>
 

@@ -25,15 +25,22 @@ import {FeatureOverlayService} from "./ngeo/feature-overlay/feature-overlay.serv
 import {NgeoUtilsService} from "./ngeo/ngeo-utils.service";
 import { ButtonGroupDirective } from './ngeo/button/button-group.directive';
 import { ButtonDirective } from './ngeo/button/button.directive';
+import {UserComponent} from "./user/users/users.component";
+import {UserDetailComponent} from "./user/user-detail/user-detail.component";
+import {UserSearchComponent} from "./user/user-search/user-search.component";
+import {UserService} from "./user/user.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     ZoneComponent,
     ZoneDetailComponent,
+    UserComponent,
+    UserDetailComponent,
     MessagesComponent,
     DashboardComponent,
     ZoneSearchComponent,
+    UserSearchComponent,
     MapDirective,
     GeometryToolComponent,
     ButtonGroupDirective,
@@ -57,6 +64,7 @@ import { ButtonDirective } from './ngeo/button/button.directive';
   ],
   providers: [
     ZoneService,
+    UserService,
     MessageService,
     GeometryService,
     FeatureOverlayService,

@@ -1,12 +1,12 @@
 <div id="search-component">
-  <h4>Zone Search</h4>
+  <h4>User Search</h4>
 
   <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
 
   <ul class="search-result">
-    <li *ngFor="let zone of zones$ | async" >
-      <a routerLink="/detail/{{zone.id}}">
-        {{zone.name}}
+    <li *ngFor="let user of users$ | async" >
+      <a routerLink="/detail/{{user.id}}">
+        {{user.name}}
       </a>
     </li>
   </ul>

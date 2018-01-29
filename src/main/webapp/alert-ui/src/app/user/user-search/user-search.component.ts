@@ -7,20 +7,20 @@ import { of }         from 'rxjs/observable/of';
 import {
   debounceTime, distinctUntilChanged, switchMap
 } from 'rxjs/operators';
-import {Zone} from "../zone";
-import {ZoneService} from "../zone.service";
+import {User} from "../user";
+import {UserService} from "../user.service";
 
 @Component({
-  selector: 'app-zone-search',
-  templateUrl: './zone-search.component.html',
-  styleUrls: ['./zone-search.component.css']
+  selector: 'app-user-search',
+  templateUrl: './user-search.component.html',
+  styleUrls: ['./user-search.component.css']
 })
-export class ZoneSearchComponent implements OnInit {
+export class UserSearchComponent implements OnInit {
 
-  zones$: Observable<Zone[]>;
+  users$: Observable<User[]>;
   private searchTerms = new Subject<string>();
 
-  constructor(private zoneService: ZoneService) {}
+  constructor(private userService: UserService) {}
 
   // Push a search term into the observable stream.
   search(term: string): void {
@@ -28,7 +28,7 @@ export class ZoneSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.zones$ = this.searchTerms.pipe(
+    this.users$ = this.searchTerms.pipe(
       // wait 300ms after each keystroke before considering the term
       debounceTime(300),
 
@@ -36,7 +36,7 @@ export class ZoneSearchComponent implements OnInit {
       distinctUntilChanged(),
 
       // switch to new search observable each time the term changes
-      switchMap((term: string) => this.zoneService.searchZones(term)),
+      switchMap((term: string) => this.userService.searchUsers(term)),
     );
   }
 }

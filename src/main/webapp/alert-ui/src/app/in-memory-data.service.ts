@@ -25,6 +25,19 @@ export class InMemoryDataService implements InMemoryDbService {
         }
       }
     ];
-    return {zones};
+    const users = [
+      {
+        id: 1,
+        firstname: 'Florent',
+        lastname: 'Gravin',
+        phone: '0033602117153'
+      }
+    ];
+
+    return {
+      zones,
+      users};
   }
+
+
 }

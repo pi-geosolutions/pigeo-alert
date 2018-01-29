@@ -3,8 +3,8 @@ import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
 import { FormBuilder,  Validators, FormGroup } from '@angular/forms';
 
-import {Zone} from "../zone";
-import {ZoneService} from "../zone.service";
+import {User} from "../user";
+import {UserService} from "../user.service";
 
 import Map from 'ol/map.js';
 import View from 'ol/view.js';
@@ -14,21 +14,21 @@ import {Observable} from "rxjs";
 import {tap} from "rxjs/operators/tap";
 
 @Component({
-  selector: 'app-zone-detail',
-  templateUrl: './zone-detail.component.html',
-  styleUrls: ['./zone-detail.component.css']
+  selector: 'app-user-detail',
+  templateUrl: './user-detail.component.html',
+  styleUrls: ['./user-detail.component.css']
 })
-export class ZoneDetailComponent implements OnInit {
+export class UserDetailComponent implements OnInit {
 
-  zone: Zone;
+  user: User;
   map: Map;
   geom: any;
 
-  zoneForm: FormGroup;
+  userForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
-    private zoneService: ZoneService,
+    private userService: UserService,
     private location: Location,
     private fb: FormBuilder
   ) {
@@ -36,30 +36,30 @@ export class ZoneDetailComponent implements OnInit {
   }
 
   createForm() {
-    this.zoneForm = this.fb.group({
+    this.userForm = this.fb.group({
       name: ['', Validators.required ]
     });
   }
 
   ngOnInit(): void {
-    this.getZone().subscribe(() => {
-      this.zoneForm.setValue({
-        name: this.zone.name
+    this.getUser().subscribe(() => {
+      this.userForm.setValue({
+        name: this.user.name
       });
     });
     this.initMap();
   }
 
-  getZone() {
+  getUser() {
     const id = +this.route.snapshot.paramMap.get('id');
-    return this.zoneService.getZone(id)
+    return this.userService.getUser(id)
       .pipe(
-        tap(zone => this.zone = zone)
+        tap(user => this.user = user)
       );
   }
 
   save(): void {
-    this.zoneService.updateZone(this.zone)
+    this.userService.updateUser(this.user)
       .subscribe(() => this.goBack());
   }
 
