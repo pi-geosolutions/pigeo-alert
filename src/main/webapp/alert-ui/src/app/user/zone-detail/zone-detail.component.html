@@ -1,0 +1,38 @@
+<div *ngIf="zone">
+
+  <h2>{{ zone.name | uppercase }} Details</h2>
+  <div><span>id: </span>{{zone.id}}</div>
+  <form [formGroup]="zoneForm" novalidate>
+    <div class="form-group">
+      <label class="center-block">Name:
+        <input class="form-control" formControlName="name" matInput>
+      </label>
+    </div>
+  </form>
+
+  <ngeo-geometry-tool
+          ngeo-geom-allow-reset="true"
+          ngeo-geom-type="Polygon"
+          ngeo-geom-outputcrs="EPSG:4326"
+          ngeo-geom-outputformat="json"
+          ngeo-geom-inputformat="json"
+          output-as-features="true"
+          [(output)]="zone.geom"
+          [map]="map">
+  </ngeo-geometry-tool>
+
+  <div ngeo-map [map]="map"></div>
+
+  <textarea [(ngModel)]="zone.geom"></textarea>
+
+</div>
+
+<mat-list>
+  <mat-list-item> Pepper </mat-list-item>
+  <mat-list-item> Salt </mat-list-item>
+  <mat-list-item> Paprika </mat-list-item>
+</mat-list>
+
+<button (click)="save()">save</button>
+
+<button (click)="goBack()">go back</button>
