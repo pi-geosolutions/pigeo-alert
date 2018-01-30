@@ -5,7 +5,7 @@ import {UserService} from "../user.service";
 @Component({
   selector: 'app-user',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  styleUrls: ['./users.component.scss']
 })
 export class UserComponent implements OnInit {
 
@@ -29,10 +29,10 @@ export class UserComponent implements OnInit {
 
   }
 
-  add(name: string): void {
-    name = name.trim();
-    if (!name) { return; }
-    this.userService.addUser({ name } as User)
+  add(firstname: string): void {
+    firstname = firstname.trim();
+    if (!firstname) { return; }
+    this.userService.addUser({ firstname } as User)
       .subscribe(user => {
         this.users.push(user);
       });

@@ -5,7 +5,7 @@ import {ZoneService} from "../zone.service";
 @Component({
   selector: 'app-zone',
   templateUrl: './zones.component.html',
-  styleUrls: ['./zones.component.css']
+  styleUrls: ['./zones.component.scss']
 })
 export class ZoneComponent implements OnInit {
 

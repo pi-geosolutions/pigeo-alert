@@ -1,4 +1,14 @@
-<h2>All zones</h2>
+<div class="page-content">
+  <h3>Zones</h3>
+
+  <mat-list role="list" *ngIf="zones && zones.length">
+    <mat-list-item role="listitem" *ngFor="let zone of zones">
+      <div>{{ zone.name }}</div>
+    </mat-list-item>
+  </mat-list>
+
+</div>
+
 <div>
   <label>Zone name:
     <input #zoneName />
@@ -8,6 +18,12 @@
     add
   </button>
 </div>
+
+<mat-list role="list" *ngIf="heroes && heroes.length">
+  <mat-list-item role="listitem" *ngFor="let hero of heroes">
+    <div>{{ hero.name }}</div>
+  </mat-list-item>
+</mat-list>
 
 <ul class="zones">
   <li     *ngFor="let zone of zones">

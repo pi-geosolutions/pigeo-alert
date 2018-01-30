@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+html,
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0px;
+    background-color: #ffffff;
+}
+
+@import '~@angular/material/theming';
+@include mat-core();
+
+$primary: mat-palette($mat-blue, 800);
+
+@mixin primary-color {
+    $primary-color: map-get($primary, 800);
+    color: $primary-color;
+}
+@mixin primary-background-contrast-color {
+    $primary-color: map-get($primary, 400);
+    $font-color: map-get(map-get($primary, contrast), 400);
+    background-color: $primary-color;
+    color: $font-color !important;
+}
+
+.router-link-active {
+    @include primary-background-contrast-color;
+}
+
+.page-content {
+    margin: 1em;
+}

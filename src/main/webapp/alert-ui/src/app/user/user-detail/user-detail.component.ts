@@ -4,6 +4,7 @@ import {Location} from "@angular/common";
 import { FormBuilder,  Validators, FormGroup } from '@angular/forms';
 
 import {User} from "../user";
+import {Zone} from "../../zone/zone";
 import {UserService} from "../user.service";
 
 import {tap} from "rxjs/operators/tap";
@@ -12,7 +13,7 @@ import {ZoneService} from "../../zone/zone.service";
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
-  styleUrls: ['./user-detail.component.css']
+  styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
 
@@ -61,7 +62,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   getZones(): void {
-    return this.zoneService.getZones()
+    this.zoneService.getZones()
       .subscribe(zones => this.allZones = zones);
 
   }

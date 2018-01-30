@@ -1,8 +1,11 @@
-<nav>
-    <a routerLink="/dashboard">Dashboard</a>
-    <a routerLink="/zones">Zones</a>
-    <a routerLink="/users">Users</a>
-</nav>
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <span class="title">Alert Monitoring</span>
+        <a mat-button [routerLink]="['/dashboard']" routerLinkActive="router-link-active">Home</a>
+        <a mat-button [routerLink]="['/zones']" routerLinkActive="router-link-active">Zones</a>
+        <a mat-button [routerLink]="['/users']" routerLinkActive="router-link-active">Users</a>
+    </mat-toolbar-row>
+</mat-toolbar>
 
 <router-outlet></router-outlet>
 <app-messages></app-messages>

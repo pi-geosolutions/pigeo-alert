@@ -1,9 +1,7 @@
 export class User {
   id: number;
-  name: string;
+  firstname: string;
+  lastname: string;
+  phone: string;
 
-  set geom(value) {
-    this.geom = value;
-    console.log('in GEOM')
-  }
 }

@@ -13,7 +13,7 @@ import {ZoneService} from "../zone.service";
 @Component({
   selector: 'app-zone-search',
   templateUrl: './zone-search.component.html',
-  styleUrls: ['./zone-search.component.css']
+  styleUrls: ['./zone-search.component.scss']
 })
 export class ZoneSearchComponent implements OnInit {
 

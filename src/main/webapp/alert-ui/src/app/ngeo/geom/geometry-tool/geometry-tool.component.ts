@@ -15,7 +15,7 @@ import VectorLayer from 'ol/layer/vector.js'
 @Component({
   selector: 'ngeo-geometry-tool',
   templateUrl: './geometry-tool.component.html',
-  styleUrls: ['./geometry-tool.component.css'],
+  styleUrls: ['./geometry-tool.component.scss'],
   inputs: [
     'map',
     'allowReset: ngeo-geom-allow-reset',
