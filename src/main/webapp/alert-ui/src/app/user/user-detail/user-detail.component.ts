@@ -6,12 +6,8 @@ import { FormBuilder,  Validators, FormGroup } from '@angular/forms';
 import {User} from "../user";
 import {UserService} from "../user.service";
 
-import Map from 'ol/map.js';
-import View from 'ol/view.js';
-import TileLayer from 'ol/layer/tile.js';
-import XYZ from 'ol/source/xyz.js';
-import {Observable} from "rxjs";
 import {tap} from "rxjs/operators/tap";
+import {ZoneService} from "../../zone/zone.service";
 
 @Component({
   selector: 'app-user-detail',
@@ -21,8 +17,8 @@ import {tap} from "rxjs/operators/tap";
 export class UserDetailComponent implements OnInit {
 
   user: User;
-  map: Map;
-  geom: any;
+  allZones: Zone[];
+  userZones: Zone[] = [];
 
   userForm: FormGroup;
 
@@ -30,24 +26,30 @@ export class UserDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private location: Location,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private zoneService: ZoneService
   ) {
     this.createForm();
   }
+  itemsAsObjects = [{value: 0, display: 'Angular'}, {value: 1, display: 'React'}];
 
   createForm() {
     this.userForm = this.fb.group({
-      name: ['', Validators.required ]
+      firstname: ['', Validators.required ],
+      lastname: ['', Validators.required ],
+      phone: ['', Validators.required ]
     });
   }
 
   ngOnInit(): void {
     this.getUser().subscribe(() => {
       this.userForm.setValue({
-        name: this.user.name
+        firstname: this.user.firstname,
+        lastname: this.user.lastname,
+        phone: this.user.phone,
       });
     });
-    this.initMap();
+    this.getZones();
   }
 
   getUser() {
@@ -58,6 +60,12 @@ export class UserDetailComponent implements OnInit {
       );
   }
 
+  getZones(): void {
+    return this.zoneService.getZones()
+      .subscribe(zones => this.allZones = zones);
+
+  }
+
   save(): void {
     this.userService.updateUser(this.user)
       .subscribe(() => this.goBack());
@@ -65,24 +73,6 @@ export class UserDetailComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
-  }
-
-  private initMap(): void {
-    this.map = new Map({
-      layers: [
-        new TileLayer({
-          source: new XYZ({
-            url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-          })
-        })
-      ],
-      view: new View({
-        center: [0, 0],
-        zoom: 2,
-        minResolution: 305.748113140705
-      })
-    });
-    window['map'] = this.map;
   }
 
 }

@@ -11,7 +11,7 @@
 
 <ul class="zones">
   <li     *ngFor="let zone of zones">
-    <a routerLink="/detail/{{zone.id}}">
+    <a routerLink="/zones/detail/{{zone.id}}">
       <span class="badge">{{zone.id}}</span> {{zone.name}}
     </a>
     <button class="delete" title="delete zone"

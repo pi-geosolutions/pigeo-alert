@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule} from "@angular/common/http";
@@ -29,6 +30,11 @@ import {UserComponent} from "./user/users/users.component";
 import {UserDetailComponent} from "./user/user-detail/user-detail.component";
 import {UserSearchComponent} from "./user/user-search/user-search.component";
 import {UserService} from "./user/user.service";
+import { TagInputModule } from 'ng2-tag-input';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/map';
+
 
 @NgModule({
   declarations: [
@@ -48,10 +54,12 @@ import {UserService} from "./user/user.service";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
+    TagInputModule,
 
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
@@ -69,6 +77,9 @@ import {UserService} from "./user/user.service";
     GeometryService,
     FeatureOverlayService,
     NgeoUtilsService
+  ],
+  schemas: [
+    NO_ERRORS_SCHEMA
   ],
   bootstrap: [AppComponent]
 })

@@ -4,28 +4,40 @@
   <div><span>id: </span>{{user.id}}</div>
   <form [formGroup]="userForm" novalidate>
     <div class="form-group">
-      <label class="center-block">Name:
-        <input class="form-control" formControlName="name">
+      <label class="center-block">First Name:
+        <input class="form-control" formControlName="firstname">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Last Name:
+        <input class="form-control" formControlName="lastname">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Phone number:
+        <input class="form-control" formControlName="phone">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Zones:
       </label>
     </div>
   </form>
-
-  <ngeo-geometry-tool
-          ngeo-geom-allow-reset="true"
-          ngeo-geom-type="Polygon"
-          ngeo-geom-outputcrs="EPSG:4326"
-          ngeo-geom-outputformat="json"
-          ngeo-geom-inputformat="json"
-          output-as-features="true"
-          [(output)]="user.geom"
-          [map]="map">
-  </ngeo-geometry-tool>
-
-  <div ngeo-map [map]="map"></div>
-
-  <textarea [(ngModel)]="user.geom"></textarea>
-
 </div>
+<tag-input [(ngModel)]="userZones"
+           theme='bootstrap'
+           [identifyBy]="'id'"
+           [displayBy]="'name'"
+           [autocomplete]="true"
+           [placeholder]="'Zones'"
+           [onlyFromAutocomplete]="true">
+  <tag-input-dropdown
+          [showDropdownIfEmpty]="true"
+          [identifyBy]="'id'"
+          [displayBy]="'name'"
+          [(autocompleteItems)]="allZones">
+  </tag-input-dropdown>
+</tag-input>
 
 <button (click)="save()">save</button>
 
