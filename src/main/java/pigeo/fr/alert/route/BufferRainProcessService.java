@@ -7,7 +7,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pigeo.fr.alert.dao.AlertZoneRepository;
+import pigeo.fr.alert.dao.UserRepository;
 import pigeo.fr.alert.domain.AlertZone;
+import pigeo.fr.alert.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,9 @@ public class BufferRainProcessService implements ProcessService {
     @Autowired
     AlertZoneRepository alertZoneRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public List process(Map<String, String> config) {
         log.info("bufferRainProcessService CREATED");
@@ -50,6 +55,7 @@ public class BufferRainProcessService implements ProcessService {
         List<Long> zoneIds = this.runQuery();
         for(Long id: zoneIds) {
             AlertZone zone = alertZoneRepository.findOne(id);
+            List<User> users = userRepository.findByZones_Id(id);
             log.info(zone.getName());
         }
         return zoneIds;

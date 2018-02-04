@@ -1,13 +1,14 @@
 package pigeo.fr.alert.domain;
 
 import com.vividsolutions.jts.geom.Point;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "zones")
 public class AlertZone {
+
 
     @Id
     @SequenceGenerator(name="alertzone_generator", sequenceName="alertzone_sequence", initialValue = 23)
@@ -16,9 +17,12 @@ public class AlertZone {
 
     private String name;
 
-    //@Type(type = "jts_geometry")
     @Column(columnDefinition = "geometry(Point,4326)")
     private Point geom;
+
+    @Column
+    @ElementCollection(targetClass=User.class)
+    private Set<User> users;
 
     public String getName() {
         return name;
@@ -35,4 +39,14 @@ public class AlertZone {
     public void setGeom(Point geom) {
         this.geom = geom;
     }
+
+    @ManyToMany
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
 }

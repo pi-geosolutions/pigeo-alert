@@ -1,6 +1,7 @@
 package pigeo.fr.alert.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,8 +21,12 @@ public class User {
     private String passwordConfirm;
 
     @Column
-    @ElementCollection(targetClass=Role.class)
+    @ManyToMany
     private Set<Role> roles;
+
+    @Column
+    @ManyToMany
+    private Set<AlertZone> zones;
 
     public String getFirstName() {
         return firstName;
@@ -72,6 +77,14 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<AlertZone> getZones() {
+        return zones;
+    }
+
+    public void setZones(Set<AlertZone> zones) {
+        this.zones = zones;
     }
 
 }
