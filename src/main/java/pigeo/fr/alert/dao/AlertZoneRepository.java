@@ -16,6 +16,8 @@ import java.util.List;
 @RepositoryRestResource
 public interface AlertZoneRepository extends CrudRepository<AlertZone, Long> {
 
+    public List<AlertZone> findAll();
+
     @Query("select zone from AlertZone as zone where equals(zone.geom,:point) = TRUE")
     List<AlertZone> findByPoint(@Param("point") Point point);
 

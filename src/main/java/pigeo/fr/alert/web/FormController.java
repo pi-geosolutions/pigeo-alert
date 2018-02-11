@@ -30,13 +30,11 @@ public class FormController {
     @GetMapping("/form")
     @ResponseBody
     @Transactional(readOnly = true)
-    public String helloWorld() {
+    public AlertZone helloWorld() {
 
         WKTWriter w = new WKTWriter();
         AlertZone zone = alertZoneRepository.findOne(1l);
-        Point p = zone.getGeom();
-        return w.write(p);
-
+        return zone;
         //return this.formService.getForm("foo");
     }
 

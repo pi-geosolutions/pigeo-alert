@@ -1,7 +1,9 @@
 package pigeo.fr.alert.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,8 +15,8 @@ public class User {
     @GeneratedValue(generator = "person_generator")
     private long id;
 
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
 
     private String username;
     private String password;
@@ -28,22 +30,31 @@ public class User {
     @ManyToMany
     private Set<AlertZone> zones;
 
-    public String getFirstName() {
-        return firstName;
+    public long getId() {
+        return id;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    @JsonProperty("test")
     public String getUsername() {
         return username;
     }
@@ -52,19 +63,23 @@ public class User {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
 
     @Transient
+    @JsonIgnore
     public String getPasswordConfirm() {
         return passwordConfirm;
     }
 
+    @JsonProperty
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
     }

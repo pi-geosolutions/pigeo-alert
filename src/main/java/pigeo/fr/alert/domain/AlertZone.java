@@ -20,6 +20,14 @@ public class AlertZone {
     @Column(columnDefinition = "geometry(Point,4326)")
     private Point geom;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     @Column
     @ElementCollection(targetClass=User.class)
     private Set<User> users;
