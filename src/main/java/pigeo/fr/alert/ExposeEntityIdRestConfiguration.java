@@ -3,6 +3,7 @@ package pigeo.fr.alert;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
+import pigeo.fr.alert.domain.AlertZone;
 import pigeo.fr.alert.domain.User;
 
 /**
@@ -14,5 +15,6 @@ public class ExposeEntityIdRestConfiguration extends RepositoryRestConfigurerAda
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
         config.exposeIdsFor(User.class);
+        config.exposeIdsFor(AlertZone.class);
     }
 }
