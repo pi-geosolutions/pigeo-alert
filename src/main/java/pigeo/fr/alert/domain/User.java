@@ -21,6 +21,8 @@ public class User {
     private String username;
     private String password;
     private String passwordConfirm;
+    private String email;
+    private String phone;
 
     @Column
     @ManyToMany
@@ -54,7 +56,7 @@ public class User {
         this.lastname = lastname;
     }
 
-    @JsonProperty("test")
+    @JsonProperty
     public String getUsername() {
         return username;
     }
@@ -84,8 +86,22 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
