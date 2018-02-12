@@ -7,23 +7,30 @@ import {MessageService} from "../message.service";
 import {tap} from "rxjs/operators/tap";
 import {catchError} from "rxjs/operators/catchError";
 import {HttpHeaders} from "@angular/common/http";
+import {ApiService} from "../common/api.service";
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+
 };
 
 @Injectable()
 export class UserService {
 
-  private usersUrl = 'api/users';  // URL to web api
+  private usersUrl = 'users';
 
   constructor(
     private http: HttpClient,
-    private messageService: MessageService) { }
+    private apiService: ApiService,
+    private messageService: MessageService) {
+    this.usersUrl = apiService.getBaseApi() + this.usersUrl;
+  }
 
   getUsers(): Observable<User[]> {
     this.messageService.add('UserService: fetched users');
-    return this.http.get<User[]>(this.usersUrl)
+    return this.http.get(this.usersUrl)
+      .map((response: any) =>
+        response._embedded ? response._embedded.users : response)
       .pipe(
         tap(users => this.log(`fetched users`)),
         catchError(this.handleError('getUsers', []))
@@ -60,7 +67,7 @@ export class UserService {
 
   /** PUT: update the user on the server */
   updateUser (user: User): Observable<any> {
-    return this.http.put(this.usersUrl, user, httpOptions).pipe(
+    return this.http.put(`${this.usersUrl}/${user.id}`, user, httpOptions).pipe(
       tap(_ => this.log(`updated user id=${user.id}`)),
       catchError(this.handleError<any>('updateUser'))
     );

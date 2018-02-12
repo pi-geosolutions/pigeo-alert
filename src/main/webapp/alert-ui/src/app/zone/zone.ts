@@ -4,6 +4,5 @@ export class Zone {
 
   set geom(value) {
     this.geom = value;
-    console.log('in GEOM')
   }
 }

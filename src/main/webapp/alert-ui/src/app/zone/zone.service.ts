@@ -7,6 +7,7 @@ import {MessageService} from "../message.service";
 import {tap} from "rxjs/operators/tap";
 import {catchError} from "rxjs/operators/catchError";
 import {HttpHeaders} from "@angular/common/http";
+import {ApiService} from "../common/api.service";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,15 +16,20 @@ const httpOptions = {
 @Injectable()
 export class ZoneService {
 
-  private zonesUrl = 'api/zones';  // URL to web api
+  private zonesUrl = 'alertZones';  // URL to web api
 
   constructor(
     private http: HttpClient,
-    private messageService: MessageService) { }
+    private apiService: ApiService,
+    private messageService: MessageService) {
+    this.zonesUrl = apiService.getBaseApi() + this.zonesUrl;
+  }
 
   getZones(): Observable<Zone[]> {
     this.messageService.add('ZoneService: fetched zones');
     return this.http.get<Zone[]>(this.zonesUrl)
+      .map((response: any) =>
+        response._embedded ? response._embedded.alertZones : response)
       .pipe(
         tap(zones => this.log(`fetched zones`)),
         catchError(this.handleError('getZones', []))
@@ -60,7 +66,7 @@ export class ZoneService {
 
   /** PUT: update the zone on the server */
   updateZone (zone: Zone): Observable<any> {
-    return this.http.put(this.zonesUrl, zone, httpOptions).pipe(
+    return this.http.put(`${this.zonesUrl}/${zone.id}`, zone, httpOptions).pipe(
       tap(_ => this.log(`updated zone id=${zone.id}`)),
       catchError(this.handleError<any>('updateZone'))
     );

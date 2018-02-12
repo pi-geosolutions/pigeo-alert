@@ -38,6 +38,7 @@ export class UserDetailComponent implements OnInit {
     this.userForm = this.fb.group({
       firstname: ['', Validators.required ],
       lastname: ['', Validators.required ],
+      email: ['', Validators.required ],
       phone: ['', Validators.required ]
     });
   }
@@ -48,6 +49,7 @@ export class UserDetailComponent implements OnInit {
         firstname: this.user.firstname,
         lastname: this.user.lastname,
         phone: this.user.phone,
+        email: this.user.email,
       });
     });
     this.getZones();
@@ -68,7 +70,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   save(): void {
-    this.userService.updateUser(this.user)
+    this.userService.updateUser(this.userForm.value)
       .subscribe(() => this.goBack());
   }
 
@@ -76,4 +78,24 @@ export class UserDetailComponent implements OnInit {
     this.location.back();
   }
 
+  onSubmit() {
+    this.user = this.prepareSaveUser();
+    this.userService.updateUser(this.user).subscribe(() => this.goBack());
+    // this.ngOnChanges();
+  }
+
+  prepareSaveUser(): User {
+    const formModel = this.userForm.value;
+
+    const saveUser: User = {
+      id: this.user.id,
+      firstname: formModel.firstname as string,
+      lastname: formModel.lastname as string,
+      phone: formModel.phone as string,
+      email: formModel.email as string,
+    };
+    return saveUser;
+  }
+
+  revert() { }
 }
