@@ -11,8 +11,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    @SequenceGenerator(name="person_generator", sequenceName="person_sequence", initialValue = 23)
-    @GeneratedValue(generator = "person_generator")
+    @SequenceGenerator(name="user_generator", sequenceName="user_sequence", initialValue = 1)
+    @GeneratedValue(generator = "user_generator")
     private long id;
 
     private String firstname;
