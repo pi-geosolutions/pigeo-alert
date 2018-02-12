@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {HashLocationStrategy, LocationStrategy} from "@angular/common";
+
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -30,6 +32,7 @@ import {UserComponent} from "./user/users/users.component";
 import {UserDetailComponent} from "./user/user-detail/user-detail.component";
 import {UserSearchComponent} from "./user/user-search/user-search.component";
 import {UserService} from "./user/user.service";
+import {ApiService} from "./common/api.service";
 import { TagInputModule } from 'ng2-tag-input';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
@@ -97,14 +100,11 @@ import 'web-animations-js';
     HttpClientModule,
     TagInputModule,
 
-    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-    // and returns simulated server responses.
-    // Remove it when a real server is ready to receive requests.
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, <InMemoryBackendConfigArgs>{
-        dataEncapsulation: false
-      }
-    ),
+    // environment.dev ? HttpClientInMemoryWebApiModule.forRoot(
+    //   InMemoryDataService, <InMemoryBackendConfigArgs>{
+    //     dataEncapsulation: false
+    //   }
+    // ) : [],
 
     MatAutocompleteModule,
     MatButtonModule,
@@ -176,10 +176,12 @@ import 'web-animations-js';
   providers: [
     ZoneService,
     UserService,
+    ApiService,
     MessageService,
     GeometryService,
     FeatureOverlayService,
-    NgeoUtilsService
+    NgeoUtilsService,
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   schemas: [
     NO_ERRORS_SCHEMA
