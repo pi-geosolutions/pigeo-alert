@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {User} from "./user";
+import {Zone} from "../zone/zone";
 import {Observable} from "rxjs/Observable";
 import {of} from "rxjs/observable/of";
 import {MessageService} from "../message.service";
@@ -11,19 +12,24 @@ import {ApiService} from "../common/api.service";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+};
 
+const urisHttpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'text/uri-list' }),
 };
 
 @Injectable()
 export class UserService {
 
   private usersUrl = 'users';
+  private zonesUrl = 'zones';
 
   constructor(
     private http: HttpClient,
     private apiService: ApiService,
     private messageService: MessageService) {
     this.usersUrl = apiService.getBaseApi() + this.usersUrl;
+    this.zonesUrl = apiService.getBaseApi() + this.zonesUrl;
   }
 
   getUsers(): Observable<User[]> {
@@ -41,6 +47,14 @@ export class UserService {
     const url = `${this.usersUrl}/${id}`;
     return this.http.get<User>(url).pipe(
       tap(_ => this.log(`fetched user id=${id}`)),
+      catchError(this.handleError<User>(`getUser id=${id}`))
+    );
+  }
+
+  getZones(id: number): Observable<Zone[]> {
+    const url = `${this.usersUrl}/${id}/zones`;
+    return this.http.get<User>(url).pipe(
+      tap(_ => this.log(`fetched zones for user id=${id}`)),
       catchError(this.handleError<User>(`getUser id=${id}`))
     );
   }
@@ -84,6 +98,13 @@ export class UserService {
     );
   }
 
+  putZones (user: User, zones: Zone[]): Observable<any> {
+    const urisList = zones.map(zone => zone.id).join('\n');
+    return this.http.put(`${this.usersUrl}/${user.id}/zones`, urisList, urisHttpOptions).pipe(
+      tap(_ => this.log(`put zone for user id=${user.id}`)),
+      catchError(this.handleError<User>('putZones'))
+    );
+  }
 
   private log(message: string) {
     this.messageService.add('UserService: ' + message);

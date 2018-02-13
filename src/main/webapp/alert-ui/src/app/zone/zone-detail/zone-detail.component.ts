@@ -87,8 +87,8 @@ export class ZoneDetailComponent implements OnInit {
       ],
       view: new View({
         center: [0, 0],
-        zoom: 2,
-        minResolution: 305.748113140705
+        zoom: 2
+        // minResolution: 305.748113140705
       })
     });
     this.featureOverlay = this.foService.getFeatureOverlay(this.map);
@@ -97,10 +97,11 @@ export class ZoneDetailComponent implements OnInit {
   private getBufferStyle(color: string) : Style {
     return new Style({
       fill: new Fill({
-        color: `rgba(${color},0.2)`
+        color: `rgba(${color},0.5)`
       }),
       stroke: new Stroke({
-        color: `rgba(${color},1)`
+        color: `rgba(${color},1)`,
+        width: 2
       })
     });
   }
@@ -112,8 +113,8 @@ export class ZoneDetailComponent implements OnInit {
       let feature;
 
       [
-        {radius: 30, style:'255,122,122'},
-        {radius: 50, style: '122,255,122'}
+        {radius: 50, style: '122,255,122'},
+        {radius: 30, style:'255,122,122'}
       ].forEach(conf => {
         let buffered = buffer(p, conf.radius, {steps: 128});
         feature = format.readFeature(buffered, {

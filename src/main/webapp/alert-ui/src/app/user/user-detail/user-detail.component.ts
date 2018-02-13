@@ -1,14 +1,13 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
-import { FormBuilder,  Validators, FormGroup } from '@angular/forms';
-
+import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 import {User} from "../user";
 import {Zone} from "../../zone/zone";
 import {UserService} from "../user.service";
-
 import {tap} from "rxjs/operators/tap";
 import {ZoneService} from "../../zone/zone.service";
+import {HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-user-detail',
@@ -20,7 +19,6 @@ export class UserDetailComponent implements OnInit {
   user: User;
   allZones: Zone[];
   userZones: Zone[] = [];
-
   userForm: FormGroup;
 
   constructor(
@@ -32,7 +30,6 @@ export class UserDetailComponent implements OnInit {
   ) {
     this.createForm();
   }
-  itemsAsObjects = [{value: 0, display: 'Angular'}, {value: 1, display: 'React'}];
 
   createForm() {
     this.userForm = this.fb.group({
@@ -44,7 +41,9 @@ export class UserDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUser().subscribe(() => {
+    const id = this.route.snapshot.paramMap.get('id');
+
+    this.getUser(id).subscribe(() => {
       this.userForm.setValue({
         firstname: this.user.firstname,
         lastname: this.user.lastname,
@@ -52,21 +51,26 @@ export class UserDetailComponent implements OnInit {
         email: this.user.email,
       });
     });
-    this.getZones();
+    this.getAllZones();
+    this.getUserZones(id);
   }
 
-  getUser() {
-    const id = +this.route.snapshot.paramMap.get('id');
+  getUser(id: number) {
     return this.userService.getUser(id)
       .pipe(
         tap(user => this.user = user)
       );
   }
 
-  getZones(): void {
+  getAllZones(): void {
     this.zoneService.getZones()
       .subscribe(zones => this.allZones = zones);
+  }
 
+  getUserZones(id: number) {
+    return this.userService.getZones(id).subscribe(zones => {
+      this.userZones = zones._embedded.alertZones
+    });
   }
 
   save(): void {
@@ -80,8 +84,10 @@ export class UserDetailComponent implements OnInit {
 
   onSubmit() {
     this.user = this.prepareSaveUser();
-    this.userService.updateUser(this.user).subscribe(() => this.goBack());
-    // this.ngOnChanges();
+    this.userService.updateUser(this.user).subscribe();
+    if(this.userZones.length) {
+      this.userService.putZones(this.user, this.userZones).subscribe();
+    }
   }
 
   prepareSaveUser(): User {
@@ -92,7 +98,7 @@ export class UserDetailComponent implements OnInit {
       firstname: formModel.firstname as string,
       lastname: formModel.lastname as string,
       phone: formModel.phone as string,
-      email: formModel.email as string,
+      email: formModel.email as string
     };
     return saveUser;
   }
