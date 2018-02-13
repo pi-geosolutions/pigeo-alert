@@ -108,6 +108,7 @@ export class GeometryService {
         } else {
           outputValue = format.writeGeometry(outputGeom);
         }
+        outputValue = JSON.parse(outputValue);
         break;
 
       case 'wkt':

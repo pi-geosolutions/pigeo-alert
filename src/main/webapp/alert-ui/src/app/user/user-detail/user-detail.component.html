@@ -2,7 +2,12 @@
 
   <h2>{{ user.name | uppercase }} Details</h2>
   <div><span>id: </span>{{user.id}}</div>
-  <form [formGroup]="userForm" novalidate>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
+    <button type="submit"
+            [disabled]="userForm.pristine" class="btn btn-success">Save</button> &nbsp;
+    <button type="reset" (click)="revert()"
+            [disabled]="userForm.pristine" class="btn btn-danger">Revert</button>
+
     <div class="form-group">
       <label class="center-block">First Name:
         <input class="form-control" formControlName="firstname">

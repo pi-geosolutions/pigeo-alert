@@ -98,8 +98,9 @@ export class GeometryToolComponent implements OnInit {
     });
     feature.setId('geometry-tool-output');
     source.addFeature(feature);
-    map.getView().fit(geometry.getExtent(), map.getSize());
-    // this.output = this.geomService.parseGeometryInput(map, this.output, {});
+    if(geometry) {
+      setTimeout(() => this.updateOutput(feature));
+    }
   }
 
   ngOnDestroy() {
@@ -113,10 +114,11 @@ export class GeometryToolComponent implements OnInit {
 
   reset(): void {
     this.clearFeatures();
+    this.output = '';
+    this.outputChange.emit(this.output);
   }
 
   private updateOutput(feature) {
-    // const feature = this.featureOverlay.getSource().getFeatures().get(0);
     if(feature) {
       this.output = this.geomService.printGeometryOutput(this.map, feature, {
         crs: this.outputCrs,

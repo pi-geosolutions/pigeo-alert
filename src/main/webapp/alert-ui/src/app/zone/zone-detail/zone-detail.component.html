@@ -12,22 +12,17 @@
 
   <ngeo-geometry-tool
           ngeo-geom-allow-reset="true"
-          ngeo-geom-type="Polygon"
+          ngeo-geom-type="Point"
           ngeo-geom-outputcrs="EPSG:4326"
           ngeo-geom-outputformat="json"
           ngeo-geom-inputformat="json"
           output-as-features="true"
           [(output)]="zone.geom"
+          (outputChange)="outputChange($event)"
           [map]="map">
   </ngeo-geometry-tool>
-
   <div ngeo-map [map]="map"></div>
-
-  <textarea [(ngModel)]="zone.geom"></textarea>
-
 </div>
 
-
 <button (click)="save()">save</button>
-
 <button (click)="goBack()">go back</button>
