@@ -48,7 +48,7 @@ public class AlertZone {
         this.geom = geom;
     }
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "alertZones")
     public Set<User> getUsers() {
         return users;
     }
