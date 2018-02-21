@@ -74,6 +74,7 @@ import {
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import 'hammerjs';
 import 'web-animations-js';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import 'web-animations-js';
     GeometryToolComponent,
     ButtonGroupDirective,
     ButtonDirective,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -189,5 +191,3 @@ import 'web-animations-js';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-platformBrowserDynamic().bootstrapModule(AppModule);
