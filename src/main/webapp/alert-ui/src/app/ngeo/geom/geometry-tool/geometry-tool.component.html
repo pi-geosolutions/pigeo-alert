@@ -1,13 +1,13 @@
 <div gi-btn-group class="btn-group">
 
-  <button class="btn btn-default draw-button"
+  <button mat-raised-button color="primary"
           ngeoButton
           [(ngModel)]="drawInteraction.active">
     <span class="fa fa-pencil"></span>&nbsp;
-    <span translate>drawGeometry</span>
+    <span translate>Draw</span>
   </button>
 
-  <button class="btn btn-default modify-button"
+  <button mat-raised-button color="primary"
           *ngIf="allowModify"
           [disabled]="!featureOverlay.getSource().getFeatures().length"
           ngeoButton
@@ -16,12 +16,12 @@
     <span translate>modifyGeometry</span>
   </button>
 
-  <button class="btn btn-danger btn-icon reset-button" ngeoButton
+  <button mat-raised-button color="primary"
           *ngIf="allowReset"
           [disabled]="!featureOverlay.getSource().getFeatures().length"
           (click)="reset()">
     <span class="fa fa-trash-o"></span>
-    <span translate>reset</span>
+    <span translate>Reset</span>
   </button>
 
 </div>

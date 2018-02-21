@@ -97,3 +97,53 @@ mat-toolbar {
     margin: auto;
     min-height: 500px;
 }
+
+.theme-bg {
+    background-color:  map-get($mat-indigo, 500);
+}
+
+.footer-btn {
+    margin-top: 30px;
+    text-align: center;
+    mat-form-field {
+        margin-left: 40px;
+    }
+}
+.header-btn {
+    margin-bottom: 30px;
+}
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+.small-form.container {
+    max-width: 600px;
+}
