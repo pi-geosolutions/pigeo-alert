@@ -1,36 +1,34 @@
-<div class="page-content">
-  <h3>Zones</h3>
-
-  <mat-list role="list" *ngIf="zones && zones.length">
-    <mat-list-item role="listitem" *ngFor="let zone of zones">
-      <div>{{ zone.name }}</div>
-    </mat-list-item>
-  </mat-list>
-
+<div class="page-header mat-primary">
+  <h1>Zones</h1>
 </div>
 
-<div>
-  <label>Zone name:
-    <input #zoneName />
-  </label>
-  <!-- (click) passes input value to add() and then clears the input -->
-  <button (click)="add(zoneName.value); zoneName.value=''">
-    add
-  </button>
+<div class="card-container">
+  <div class="table-header">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+  <mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/zones/detail/{{row.id}}"></mat-row>
+  </mat-table>
+  <mat-paginator #paginator
+                 [pageSize]="5"
+                 [pageSizeOptions]="[5, 10, 20]"
+                 [showFirstLastButtons]="true">
+  </mat-paginator>
+
+  <div class="footer-btn">
+    <button mat-fab class="left-align">
+      <mat-icon aria-label="Add new zone" (click)="add(zoneName.value); zoneName.value=''">add</mat-icon>
+    </button>
+    <mat-form-field [color]="'accent'">
+      <input matInput #zoneName placeholder="Zone name">
+    </mat-form-field>
+  </div>
+
 </div>
-
-<mat-list role="list" *ngIf="heroes && heroes.length">
-  <mat-list-item role="listitem" *ngFor="let hero of heroes">
-    <div>{{ hero.name }}</div>
-  </mat-list-item>
-</mat-list>
-
-<ul class="zones">
-  <li     *ngFor="let zone of zones">
-    <a routerLink="/zones/detail/{{zone.id}}">
-      <span class="badge">{{zone.id}}</span> {{zone.name}}
-    </a>
-    <button class="delete" title="delete zone"
-            (click)="delete(zone)">x</button>
-  </li>
-</ul>

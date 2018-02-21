@@ -1,28 +1,46 @@
 <div *ngIf="zone">
+  <div class="page-header mat-primary">
+    <h1>{{ zone.name | uppercase }}</h1>
+  </div>
 
-  <h2>{{ zone.name | uppercase }} Details</h2>
-  <div><span>id: </span>{{zone.id}}</div>
-  <form [formGroup]="zoneForm" novalidate>
-    <div class="form-group">
-      <label class="center-block">Name:
-        <input class="form-control" formControlName="name">
-      </label>
-    </div>
-  </form>
+  <div class="container">
 
-  <ngeo-geometry-tool
-          ngeo-geom-allow-reset="true"
-          ngeo-geom-type="Point"
-          ngeo-geom-outputcrs="EPSG:4326"
-          ngeo-geom-outputformat="json"
-          ngeo-geom-inputformat="json"
-          output-as-features="true"
-          [(output)]="zone.geom"
-          (outputChange)="outputChange($event)"
-          [map]="map">
-  </ngeo-geometry-tool>
-  <div ngeo-map [map]="map"></div>
+    <form [formGroup]="zoneForm" novalidate>
+
+      <div class="header-btn">
+
+        <button mat-raised-button color="accent"
+                type="submit"
+                [disabled]="zoneForm.pristine">Save</button>
+
+        <button mat-raised-button color="primary"
+                type="reset" (click)="revert()"
+                [disabled]="zoneForm.pristine">Revert</button>
+
+        <button mat-raised-button color="primary"
+                (click)="goBack()">Back</button>
+
+        <button mat-raised-button color="warn"
+                (click)="delete()">Delete</button>
+      </div>
+
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Name" formControlName="name">
+      </mat-form-field>
+
+    </form>
+
+    <ngeo-geometry-tool
+            ngeo-geom-allow-reset="true"
+            ngeo-geom-type="Point"
+            ngeo-geom-outputcrs="EPSG:4326"
+            ngeo-geom-outputformat="json"
+            ngeo-geom-inputformat="json"
+            output-as-features="true"
+            [(output)]="zone.geom"
+            (outputChange)="outputChange($event)"
+            [map]="map">
+    </ngeo-geometry-tool>
+    <div ngeo-map [map]="map"></div>
+  </div>
 </div>
-
-<button (click)="save()">save</button>
-<button (click)="goBack()">go back</button>
