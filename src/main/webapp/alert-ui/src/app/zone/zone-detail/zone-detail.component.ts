@@ -116,7 +116,7 @@ export class ZoneDetailComponent implements OnInit {
         {radius: 50, style: '122,255,122'},
         {radius: 30, style:'255,122,122'}
       ].forEach(conf => {
-        let buffered = buffer(p, conf.radius, {steps: 128});
+        let buffered = buffer(p, conf.radius, {steps: 5});
         feature = format.readFeature(buffered, {
           dataProjection: 'EPSG:4326',
           featureProjection: this.map.getView().getProjection()

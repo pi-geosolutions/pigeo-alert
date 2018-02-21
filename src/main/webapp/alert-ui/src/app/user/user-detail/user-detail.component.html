@@ -1,49 +1,49 @@
 <div *ngIf="user">
 
-  <h2>{{ user.name | uppercase }} Details</h2>
-  <div><span>id: </span>{{user.id}}</div>
-  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
-    <button type="submit"
-            [disabled]="userForm.pristine" class="btn btn-success">Save</button> &nbsp;
-    <button type="reset" (click)="revert()"
-            [disabled]="userForm.pristine" class="btn btn-danger">Revert</button>
+  <div class="page-header mat-primary">
+    <h1>{{ user.lastname | uppercase }}</h1>
 
-    <div class="form-group">
-      <label class="center-block">First Name:
-        <input class="form-control" formControlName="firstname">
-      </label>
+    <div class="header-form">
+      <button mat-raised-button color="primary"
+              type="submit"
+              [disabled]="userForm.pristine">Save</button>
+
+      <button mat-raised-button color="primary"
+              type="reset" (click)="revert()"
+              [disabled]="userForm.pristine" class="btn btn-danger">Revert</button>
     </div>
-    <div class="form-group">
-      <label class="center-block">Last Name:
-        <input class="form-control" formControlName="lastname">
-      </label>
-    </div>
-    <div class="form-group">
-      <label class="center-block">Phone number:
-        <input class="form-control" formControlName="phone">
-      </label>
-    </div>
-    <div class="form-group">
-      <label class="center-block">Zones:
-      </label>
-    </div>
-  </form>
+  </div>
+
+  <div class="card-container mat-elevation-z8">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="First Name" formControlName="firstname">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Last Name" formControlName="lastname">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Phone number" formControlName="phone">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Email" formControlName="email">
+      </mat-form-field>
+    </form>
+
+    <tag-input [(ngModel)]="userZones"
+               theme='bootstrap'
+               [identifyBy]="'id'"
+               [displayBy]="'name'"
+               [autocomplete]="true"
+               [placeholder]="'Zones'"
+               [onlyFromAutocomplete]="true">
+      <tag-input-dropdown
+              [showDropdownIfEmpty]="true"
+              [identifyBy]="'id'"
+              [displayBy]="'name'"
+              [(autocompleteItems)]="allZones">
+      </tag-input-dropdown>
+    </tag-input>
+  </div>
+  <button (click)="goBack()">go back</button>
 </div>
-<tag-input [(ngModel)]="userZones"
-           theme='bootstrap'
-           [identifyBy]="'id'"
-           [displayBy]="'name'"
-           [autocomplete]="true"
-           [placeholder]="'Zones'"
-           [onlyFromAutocomplete]="true">
-  <tag-input-dropdown
-          [showDropdownIfEmpty]="true"
-          [identifyBy]="'id'"
-          [displayBy]="'name'"
-          [(autocompleteItems)]="allZones">
-  </tag-input-dropdown>
-</tag-input>
-
-<button (click)="save()">save</button>
-
-<button (click)="goBack()">go back</button>

@@ -41,7 +41,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = +this.route.snapshot.paramMap.get('id');
 
     this.getUser(id).subscribe(() => {
       this.userForm.setValue({
@@ -69,7 +69,7 @@ export class UserDetailComponent implements OnInit {
 
   getUserZones(id: number) {
     return this.userService.getZones(id).subscribe(zones => {
-      this.userZones = zones._embedded.alertZones
+      this.userZones = zones
     });
   }
 

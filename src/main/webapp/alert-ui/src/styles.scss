@@ -3,7 +3,7 @@
 
 html,
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: Roboto, "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     margin: 0px;
     background-color: #ffffff;
 }
@@ -11,13 +11,14 @@ body {
 @import '~@angular/material/theming';
 @include mat-core();
 
+
 $primary: mat-palette($mat-blue, 800);
 
 @mixin primary-color {
     $primary-color: map-get($primary, 800);
     color: $primary-color;
 }
-@mixin primary-background-contrast-color {
+/*@mixin primary-background-contrast-color {
     $primary-color: map-get($primary, 400);
     $font-color: map-get(map-get($primary, contrast), 400);
     background-color: $primary-color;
@@ -27,7 +28,72 @@ $primary: mat-palette($mat-blue, 800);
 .router-link-active {
     @include primary-background-contrast-color;
 }
+*/
 
 .page-content {
     margin: 1em;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.page-header {
+    background-color:  map-get($mat-indigo, 500);
+    padding-left: 32px;
+    margin-bottom: 40px;
+    display: flex;
+    h1 {
+        flex: 1 1 auto;
+        font-weight: 300;
+        margin: 0;
+        padding: 28px 8px;
+        font-size: 20px;
+        color: #fff;
+    }
+
+    .header-form {
+        display: flex;
+        flex: 1 1 auto;
+        padding-top: 12px;
+
+        button {
+            margin-right: 15px;
+        }
+
+        input {
+            max-width:200px;
+        }
+    }
+}
+app-root {
+    isplay: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+mat-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    width: 75%;
+    margin: auto;
+    min-height: 500px;
 }

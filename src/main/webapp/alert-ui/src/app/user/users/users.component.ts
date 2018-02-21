@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {User} from "../user";
 import {UserService} from "../user.service";
+import {MatTableDataSource, MatPaginator} from "@angular/material";
 
 @Component({
   selector: 'app-user',
@@ -18,6 +19,9 @@ export class UserComponent implements OnInit {
   }
 
   selectedUser: User;
+  displayedColumns: string[] = ['firstname', 'lastname', 'email', 'phone'];
+  dataSource: any;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   onSelect(user: User): void {
     this.selectedUser = user;
@@ -25,8 +29,11 @@ export class UserComponent implements OnInit {
 
   getUsers(): void {
     this.userService.getUsers()
-      .subscribe(users => this.users = users);
-
+      .subscribe(users => {
+        this.users = users;
+        this.dataSource = new MatTableDataSource(this.users);
+        this.dataSource.paginator = this.paginator;
+      });
   }
 
   add(firstname: string): void {
@@ -35,6 +42,8 @@ export class UserComponent implements OnInit {
     this.userService.addUser({ firstname } as User)
       .subscribe(user => {
         this.users.push(user);
+        this.dataSource = new MatTableDataSource(this.users);
+        this.dataSource.paginator = this.paginator;
       });
   }
 
@@ -43,4 +52,9 @@ export class UserComponent implements OnInit {
     this.userService.deleteUser(user).subscribe();
   }
 
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    this.dataSource.filter = filterValue;
+  }
 }
