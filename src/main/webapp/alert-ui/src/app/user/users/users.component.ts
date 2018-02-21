@@ -36,10 +36,10 @@ export class UserComponent implements OnInit {
       });
   }
 
-  add(firstname: string): void {
-    firstname = firstname.trim();
-    if (!firstname) { return; }
-    this.userService.addUser({ firstname } as User)
+  add(lastname: string): void {
+    lastname = lastname.trim();
+    if (!lastname) { return; }
+    this.userService.addUser({ lastname } as User)
       .subscribe(user => {
         this.users.push(user);
         this.dataSource = new MatTableDataSource(this.users);

@@ -2,20 +2,27 @@
 
   <div class="page-header mat-primary">
     <h1>{{ user.lastname | uppercase }}</h1>
-
-    <div class="header-form">
-      <button mat-raised-button color="primary"
-              type="submit"
-              [disabled]="userForm.pristine">Save</button>
-
-      <button mat-raised-button color="primary"
-              type="reset" (click)="revert()"
-              [disabled]="userForm.pristine" class="btn btn-danger">Revert</button>
-    </div>
   </div>
 
-  <div class="card-container mat-elevation-z8">
+  <div class="container small-form">
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="header-btn">
+
+        <button mat-raised-button color="accent"
+                type="submit"
+                [disabled]="userForm.pristine">Save</button>
+
+        <button mat-raised-button color="primary"
+                type="reset" (click)="revert()"
+                [disabled]="userForm.pristine">Revert</button>
+
+        <button mat-raised-button color="primary"
+                (click)="goBack()">Back</button>
+
+        <button mat-raised-button color="warn"
+                (click)="delete()">Delete</button>
+      </div>
+
       <mat-form-field class="full-width">
         <input matInput placeholder="First Name" formControlName="firstname">
       </mat-form-field>
@@ -45,5 +52,4 @@
       </tag-input-dropdown>
     </tag-input>
   </div>
-  <button (click)="goBack()">go back</button>
 </div>

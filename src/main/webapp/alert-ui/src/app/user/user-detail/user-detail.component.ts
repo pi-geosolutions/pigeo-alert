@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, IterableDiffers} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
 import {FormBuilder, Validators, FormGroup} from "@angular/forms";
@@ -18,16 +18,21 @@ export class UserDetailComponent implements OnInit {
 
   user: User;
   allZones: Zone[];
-  userZones: Zone[] = [];
+  userZones: Zone[];
+  pristineZones: Zone[];
   userForm: FormGroup;
+  iterableDiffer: any;
+  firstChangeCheck: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
     private location: Location,
     private fb: FormBuilder,
-    private zoneService: ZoneService
+    private zoneService: ZoneService,
+    private iterableDiffers: IterableDiffers
   ) {
+    this.iterableDiffer = this.iterableDiffers.find([]).create(null);
     this.createForm();
   }
 
@@ -55,6 +60,17 @@ export class UserDetailComponent implements OnInit {
     this.getUserZones(id);
   }
 
+  ngDoCheck() {
+    let changes = this.iterableDiffer.diff(this.userZones);
+    if (changes) {
+      if(!this.firstChangeCheck) {
+        this.firstChangeCheck = true;
+        return;
+      }
+      this.userForm.markAsDirty();
+    }
+  }
+
   getUser(id: number) {
     return this.userService.getUser(id)
       .pipe(
@@ -69,7 +85,8 @@ export class UserDetailComponent implements OnInit {
 
   getUserZones(id: number) {
     return this.userService.getZones(id).subscribe(zones => {
-      this.userZones = zones
+      this.userZones = zones;
+      this.pristineZones = zones;
     });
   }
 
@@ -84,10 +101,16 @@ export class UserDetailComponent implements OnInit {
 
   onSubmit() {
     this.user = this.prepareSaveUser();
-    this.userService.updateUser(this.user).subscribe();
-    if(this.userZones.length) {
-      this.userService.putZones(this.user, this.userZones).subscribe();
-    }
+    this.userService.updateUser(this.user).subscribe(() => {
+      if(this.userZones.length) {
+        this.userService.putZones(this.user, this.userZones).subscribe(() => {
+          this.goBack();
+        });
+      }
+      else {
+        this.goBack();
+      }
+    });
   }
 
   prepareSaveUser(): User {
@@ -103,5 +126,20 @@ export class UserDetailComponent implements OnInit {
     return saveUser;
   }
 
-  revert() { }
+  delete() {
+    this.userService.deleteUser(this.user).subscribe(() => this.goBack());
+  }
+
+  revert() {
+    if(this.userZones !== this.pristineZones) {
+      this.firstChangeCheck = false;
+      this.userZones = this.pristineZones;
+    }
+    this.userForm.reset({
+      firstname: this.user.firstname,
+      lastname: this.user.lastname,
+      phone: this.user.phone,
+      email: this.user.email,
+    });
+  }
 }

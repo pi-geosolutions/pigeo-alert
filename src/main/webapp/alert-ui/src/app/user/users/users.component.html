@@ -1,18 +1,8 @@
 <div class="page-header mat-primary">
   <h1>Users</h1>
-
-  <div class="header-form">
-    <button mat-fab class="left-align">
-      <mat-icon aria-label="Add new user" (click)="add(userName.value); userName.value=''">add</mat-icon>
-    </button>
-    <mat-form-field [color]="'accent'">
-      <input matInput #userName placeholder="User lastname">
-    </mat-form-field>
-  </div>
-
 </div>
 
-<div class="card-container mat-elevation-z8">
+<div class="card-container">
   <div class="table-header">
     <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
@@ -40,9 +30,18 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/users/detail/{{row.id}}"></mat-row>
   </mat-table>
   <mat-paginator #paginator
-                 [pageSize]="10"
+                 [pageSize]="5"
                  [pageSizeOptions]="[5, 10, 20]"
                  [showFirstLastButtons]="true">
   </mat-paginator>
 
+</div>
+
+<div class="footer-btn">
+  <button mat-fab class="left-align">
+    <mat-icon aria-label="Add new user" (click)="add(userName.value); userName.value=''">add</mat-icon>
+  </button>
+  <mat-form-field [color]="'accent'">
+    <input matInput #userName placeholder="User lastname">
+  </mat-form-field>
 </div>
