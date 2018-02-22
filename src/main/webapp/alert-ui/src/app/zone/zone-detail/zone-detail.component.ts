@@ -19,6 +19,8 @@ import GeoJSON from 'ol/format/geojson.js';
 import Fill from 'ol/style/fill';
 import Stroke from 'ol/style/stroke';
 import Style from 'ol/style/style';
+import Feature from 'ol/feature.js';
+import {GeometryService} from "../../ngeo/geom/geometry.service";
 
 @Component({
   selector: 'app-zone-detail',
@@ -31,6 +33,8 @@ export class ZoneDetailComponent implements OnInit {
   map: Map;
   geom: any;
   private featureOverlay: VectorLayer;
+  firstChangeCheck: boolean = false;
+  private pristineGeom: any;
 
   zoneForm: FormGroup;
 
@@ -38,6 +42,7 @@ export class ZoneDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private zoneService: ZoneService,
     private foService: FeatureOverlayService,
+    private geomService: GeometryService,
     private location: Location,
     private fb: FormBuilder
   ) {
@@ -63,17 +68,58 @@ export class ZoneDetailComponent implements OnInit {
     const id = +this.route.snapshot.paramMap.get('id');
     return this.zoneService.getZone(id)
       .pipe(
-        tap(zone => this.zone = zone)
+        tap(zone => {
+          this.zone = zone;
+          this.pristineGeom = zone.geom;
+          if(!zone.geom) {
+            this.firstChangeCheck = true;
+          }
+        })
       );
-  }
-
-  save(): void {
-    this.zoneService.updateZone(this.zone)
-      .subscribe(() => this.goBack());
   }
 
   goBack(): void {
     this.location.back();
+  }
+
+  onSubmit() {
+    this.zone = this.prepareSaveZone();
+    this.zoneService.updateZone(this.zone)
+      .subscribe(() => this.goBack());
+  }
+
+  prepareSaveZone(): Zone {
+    const formModel = this.zoneForm.value;
+
+    const saveZone: Zone = {
+      id: this.zone.id,
+      geom: null,
+      name: formModel.name as string
+    };
+    if (this.zone.geom) {
+      saveZone.geom = this.zone.geom;
+    }
+    return saveZone;
+  }
+
+  revert() {
+    this.zone.geom = this.pristineGeom;
+    const source = this.featureOverlay.getSource();
+    if(this.zone.geom) {
+      const geom = this.geomService.parseGeometryInput(this.map, this.zone.geom, {
+        format: 'json'
+      });
+      const feature = new Feature({
+        geometry: geom
+      });
+      source.addFeature(feature);
+    } else {
+      source.clear();
+    }
+    this.outputChange(this.zone.geom);
+    this.zoneForm.reset({
+      name: this.zone.name,
+    });
   }
 
   private initMap(): void {
@@ -81,14 +127,13 @@ export class ZoneDetailComponent implements OnInit {
       layers: [
         new TileLayer({
           source: new XYZ({
-            url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            url: 'https://api.mapbox.com/styles/v1/fgravin/cjdywq8c938442sn38mir33hs/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZmdyYXZpbiIsImEiOiJjamN0bDMxaGgwam1oMndwZ2Mybmx4NXozIn0.CET5cPxi1znruX-wCJX3tg'
           })
         })
       ],
       view: new View({
-        center: [0, 0],
-        zoom: 2
-        // minResolution: 305.748113140705
+        center: [1802796.4860563292, 541537.2241887288],
+        zoom: 4
       })
     });
     this.featureOverlay = this.foService.getFeatureOverlay(this.map);
@@ -107,6 +152,13 @@ export class ZoneDetailComponent implements OnInit {
   }
 
   outputChange(geom) {
+    if(!this.firstChangeCheck) {
+      this.firstChangeCheck = true;
+    }
+    else {
+      this.zoneForm.markAsDirty();
+    }
+
     if(geom) {
       const p = point(geom.coordinates);
       const format = new GeoJSON();

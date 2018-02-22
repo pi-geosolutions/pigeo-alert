@@ -5,7 +5,7 @@
 
   <div class="container">
 
-    <form [formGroup]="zoneForm" novalidate>
+    <form [formGroup]="zoneForm" (ngSubmit)="onSubmit()"  novalidate>
 
       <div class="header-btn">
 

@@ -90,11 +90,6 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
-  save(): void {
-    this.userService.updateUser(this.userForm.value)
-      .subscribe(() => this.goBack());
-  }
-
   goBack(): void {
     this.location.back();
   }
