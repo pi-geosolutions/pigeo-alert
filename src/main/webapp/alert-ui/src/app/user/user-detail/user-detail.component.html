@@ -16,10 +16,10 @@
                 type="reset" (click)="revert()"
                 [disabled]="userForm.pristine">Revert</button>
 
-        <button mat-raised-button color="primary"
+        <button type="button" mat-raised-button color="primary"
                 (click)="goBack()">Back</button>
 
-        <button mat-raised-button color="warn"
+        <button type="button" mat-raised-button color="warn"
                 (click)="delete()">Delete</button>
       </div>
 

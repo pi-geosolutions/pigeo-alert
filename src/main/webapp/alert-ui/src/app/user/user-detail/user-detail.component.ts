@@ -7,7 +7,6 @@ import {Zone} from "../../zone/zone";
 import {UserService} from "../user.service";
 import {tap} from "rxjs/operators/tap";
 import {ZoneService} from "../../zone/zone.service";
-import {HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-user-detail',
