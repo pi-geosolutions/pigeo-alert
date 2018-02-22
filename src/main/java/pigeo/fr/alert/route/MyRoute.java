@@ -26,7 +26,7 @@ public class MyRoute extends RouteBuilder {
 
         from("direct:sendMail")
                 .setHeader("subject", constant("HELLO FLOW"))
-                .setHeader("to", constant("florent.gravin@gmail.com"));
-//                .recipientList(simple("smtps://smtp.gmail.com:465?username=${property.smtpuser}&password=${property.smtppassword}")); This works
+                .setHeader("to", constant("florent.gravin@gmail.com"))
+                .recipientList(simple("smtps://smtp.gmail.com:465?username=${property.smtpuser}&password=${property.smtppassword}")); //This works
     }
 }
