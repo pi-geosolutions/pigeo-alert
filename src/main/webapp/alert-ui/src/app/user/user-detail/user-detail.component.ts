@@ -84,6 +84,10 @@ export class UserDetailComponent implements OnInit {
 
   getUserZones(id: number) {
     return this.userService.getZones(id).subscribe(zones => {
+      // fix dirtyCheck if no initial zone
+      if(!zones.length) {
+        this.firstChangeCheck = true;
+      }
       this.userZones = zones;
       this.pristineZones = zones;
     });
