@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  dev: !!location.href.indexOf('4200')
+  dev: location.href.indexOf('4200') > 0
 };

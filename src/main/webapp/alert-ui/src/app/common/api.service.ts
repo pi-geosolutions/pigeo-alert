@@ -9,7 +9,7 @@ export class ApiService {
   getBaseApi(): string  {
     let url = 'http://localhost:8080/';
     if (!environment.dev) {
-      url = '/';
+      url = '/pi-alert/';
     }
     return url;
   }
