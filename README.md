@@ -1,14 +1,42 @@
-# Build
-```
-mvn clean install
-```
-# UI
-
+# Develop
+## Angular CLI
+Build web static resources
 ```
 cd src/main/webapp/alert-ui
 npm install
 ng serve
 ```
+localhost:4200
+
+## sprint boot
+Add spring-boot runner in Intellij
+
+# Deploy in tomcat
+pom.xml configuration:
+
+```
+<packaging>war</packaging>
+..
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-tomcat</artifactId>
+    <scope>provided</scope>
+</dependency>
+```
+
+Build ui for tomcat mode.
+```
+cd src/main/webapp/alert-ui
+ng build --base-href
+
+```
+
+Build war
+```
+mvn package -DskipTests
+```
+
+Then push war in tomcat
 
 # Postgis Raster
 
