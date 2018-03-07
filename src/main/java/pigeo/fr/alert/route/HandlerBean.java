@@ -44,6 +44,8 @@ public class HandlerBean implements org.apache.camel.Processor {
 
             Map<String, String> props = new HashMap<String, String>();
             String line = null;
+
+            // Read config files properties and set props map
             while( (line = bufReader.readLine()) != null ) {
                 if(line.length() == 0 || line.equals("")) {
                     break;
@@ -53,6 +55,8 @@ public class HandlerBean implements org.apache.camel.Processor {
                     throw new RuntimeException("CAMEL PROCESSOR INIT: Input config file format is not valid");
                 }
                 props.put(tokens[0], tokens[1]);
+
+                // persist properties in camel exchange
                 exchange.setProperty(tokens[0], tokens[1]);
             }
 

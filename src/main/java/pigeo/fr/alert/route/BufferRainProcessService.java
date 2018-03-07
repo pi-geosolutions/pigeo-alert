@@ -52,16 +52,16 @@ public class BufferRainProcessService implements ProcessService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ReportService reportService;
+
     @Override
     public List process(Map<String, String> config) {
         log.info("bufferRainProcessService CREATED");
         this.loadConfig(config);
         List<Long> zoneIds = this.runQuery();
-        for(Long id: zoneIds) {
-            AlertZone zone = alertZoneRepository.findOne(id);
-            List<User> users = userRepository.findByZones_Id(id);
-            log.info(zone.getName());
-        }
+
+        List<Report> reports = this.reportService.createReports(zoneIds);
         return zoneIds;
     }
 
