@@ -96,14 +96,9 @@ export class UserDetailComponent implements OnInit {
   onSubmit() {
     this.user = this.prepareSaveUser();
     this.userService.updateUser(this.user).subscribe(() => {
-      if(this.userZones.length) {
-        this.userService.putZones(this.user, this.userZones).subscribe(() => {
-          this.goBack();
-        });
-      }
-      else {
+      this.userService.putZones(this.user, this.userZones).subscribe(() => {
         this.goBack();
-      }
+      });
     });
   }
 
