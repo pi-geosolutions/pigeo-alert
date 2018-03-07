@@ -10,7 +10,10 @@ import pigeo.fr.alert.dao.AlertZoneRepository;
 import pigeo.fr.alert.dao.UserRepository;
 import pigeo.fr.alert.domain.AlertZone;
 import pigeo.fr.alert.domain.User;
+import pigeo.fr.alert.report.Report;
+import pigeo.fr.alert.service.ReportService;
 
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +32,7 @@ public class BufferRainProcessService implements ProcessService {
 
     private String imagePath;
     private String tableName;
+    private String threshold;
 
     private String sql = "  WITH rast_buffer AS (" +
             "    SELECT (ST_DumpAsPolygons(rast)).*" +
@@ -36,7 +40,7 @@ public class BufferRainProcessService implements ProcessService {
             "    WHERE ST_Intersects(rast, the_geom)" +
             "  )" +
             "  select distinct(gid) from rast_buffer, villes_buffer" +
-            "  where val > 1 and ST_Intersects(geom, the_geom)" +
+            "  where val > ? and ST_Intersects(geom, the_geom)" +
             "  group by val, gid;";
 
     @Autowired
@@ -65,9 +69,11 @@ public class BufferRainProcessService implements ProcessService {
     public void loadConfig(Map<String, String> config) {
         imagePath = config.get(INPUT_CONFIG_IMAGEPATH);
         tableName = config.get(INPUT_CONFIG_TABLENAME);
+        threshold = config.get(INPUT_CONFIG_THRESHOLD);
 
         if(imagePath == null || imagePath.equals("") ||
-           tableName == null || tableName.equals("") ) {
+           tableName == null || tableName.equals("") ||
+           threshold == null || threshold.equals("") ) {
 
             throw new RuntimeException("CAMEL PROCESSOR INIT: Input config file" +
                     " missing property for process " + config.get(INPUT_CONFIG_PROCESS));
@@ -76,8 +82,9 @@ public class BufferRainProcessService implements ProcessService {
 
     private List<Long> runQuery() {
         List<Long> zones = new ArrayList<Long>();
+
         jdbcTemplate.query(
-                sql,
+                sql, new Object[] {this.threshold}, new int[] {Types.DOUBLE},
                 (rs, rowNum) -> rs.getLong("gid")
         ).forEach(gid -> zones.add(gid));
         return zones;
