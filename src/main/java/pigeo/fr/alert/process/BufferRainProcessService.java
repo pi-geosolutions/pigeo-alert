@@ -28,18 +28,20 @@ public class BufferRainProcessService implements ProcessService {
 
     private static final Logger log = LoggerFactory.getLogger(BufferRainProcessService.class);
 
+    public final String TABLE_NAME = "zones_buffer_50";
+
     private String imagePath;
     private String tableName;
     private String threshold;
 
     private String sql = "  WITH rast_buffer AS (" +
             "    SELECT (ST_DumpAsPolygons(rast)).*" +
-            "    FROM rain_10x10, villes_buffer" +
+            "    FROM ${tableName}, " + TABLE_NAME + " " +
             "    WHERE ST_Intersects(rast, the_geom)" +
             "  )" +
-            "  select distinct(gid) from rast_buffer, villes_buffer" +
+            "  select distinct(id) from rast_buffer, " + TABLE_NAME + " " +
             "  where val > ? and ST_Intersects(geom, the_geom)" +
-            "  group by val, gid;";
+            "  group by val, id;";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -76,6 +78,7 @@ public class BufferRainProcessService implements ProcessService {
             throw new RuntimeException("CAMEL PROCESSOR INIT: Input config file" +
                     " missing property for process " + config.get(INPUT_CONFIG_PROCESS));
         }
+        sql = sql.replace("${tableName}", tableName);
     }
 
     private List<Long> runQuery() {
@@ -83,8 +86,8 @@ public class BufferRainProcessService implements ProcessService {
 
         jdbcTemplate.query(
                 sql, new Object[] {this.threshold}, new int[] {Types.DOUBLE},
-                (rs, rowNum) -> rs.getLong("gid")
-        ).forEach(gid -> zones.add(gid));
+                (rs, rowNum) -> rs.getLong("id")
+        ).forEach(id -> zones.add(id));
         return zones;
     }
 }
