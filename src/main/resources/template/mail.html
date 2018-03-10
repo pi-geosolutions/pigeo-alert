@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>PADRE Vigilance report</title>
+</head>
+<body>
+<h3>PADRE Vigilance report</h3>
+
+<p>Dear ${report.user.firstname} ${report.user.lastname},</p>
+<p>You subscribed to some POIS that have been detected as potential warning:</p>
+<p>Eumetsat rain prevision in a buffer of 50 km: </p>
+<ul>
+    <#list report.zones as zone>
+        <li><b>${zone.name}</b></li>
+    </#list>
+</ul>
+
+</body>
+</html>
