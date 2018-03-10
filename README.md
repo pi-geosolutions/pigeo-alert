@@ -1,7 +1,7 @@
 # Develop
 ## Angular CLI
 Build web static resources
-```
+```shell
 cd src/main/webapp/alert-ui
 npm install
 ng serve
@@ -14,7 +14,7 @@ Add spring-boot runner in Intellij
 # Deploy in tomcat
 pom.xml configuration:
 
-```
+```xml
 <packaging>war</packaging>
 ..
 <dependency>
@@ -25,14 +25,14 @@ pom.xml configuration:
 ```
 
 Build ui for tomcat mode.
-```
+```shell
 cd src/main/webapp/alert-ui
 ng build --base-href
 
 ```
 
 Build war
-```
+```shell
 mvn package -DskipTests
 ```
 
@@ -61,7 +61,7 @@ SET postgis.gdal_enabled_drivers = 'ENABLE_ALL';
 -- -x prevent adding the max extent constraint (which is long to add) so we can append raster to the table afterward
 -- -Y make loading MUCH faster by using copy statements instead of insert statements
 ```
-```
+```shell
 raster2pgsql -s 4326 -t 10x10 -C -x -Y "/home/florent/dev/DATA_DIR/lastrain.tif" rain_10x10 | psql -U postgres -d "eumetsat"
 ```
 
@@ -70,7 +70,19 @@ raster2pgsql -s 4326 -t 10x10 -C -x -Y "/home/florent/dev/DATA_DIR/lastrain.tif"
 
 ServerSMS
 
-```
+```shell
 sudo apt-get install smstools
-
 sudo apt-get install mailutils
+```
+
+# Weather Alert
+
+To Trigger a process analyse, you have to push a config file in a specific folder.
+Here an example of config file for incoming rain alert
+```
+process=bufferRainProcessService
+tablename=lastrain
+threshold=10
+smtpuser=pigeo.alert
+smtppassword=********
+```
