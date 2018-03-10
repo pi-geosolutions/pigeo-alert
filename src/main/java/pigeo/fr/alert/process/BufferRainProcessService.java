@@ -30,7 +30,6 @@ public class BufferRainProcessService implements ProcessService {
 
     public final String TABLE_NAME = "zones_buffer_50";
 
-    private String imagePath;
     private String tableName;
     private String threshold;
 
@@ -67,12 +66,10 @@ public class BufferRainProcessService implements ProcessService {
 
     @Override
     public void loadConfig(Map<String, String> config) {
-        imagePath = config.get(INPUT_CONFIG_IMAGEPATH);
         tableName = config.get(INPUT_CONFIG_TABLENAME);
         threshold = config.get(INPUT_CONFIG_THRESHOLD);
 
-        if(imagePath == null || imagePath.equals("") ||
-           tableName == null || tableName.equals("") ||
+        if(tableName == null || tableName.equals("") ||
            threshold == null || threshold.equals("") ) {
 
             throw new RuntimeException("CAMEL PROCESSOR INIT: Input config file" +
