@@ -47,10 +47,15 @@
             <version>5.0.12.Final</version>
         </dependency>
 
+        <!--<dependency>-->
+            <!--<groupId>com.bedatadriven</groupId>-->
+            <!--<artifactId>jackson-datatype-jts</artifactId>-->
+            <!--<version>2.4</version>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>com.bedatadriven</groupId>
+            <groupId>com.github.mathieu-lavigne</groupId>
             <artifactId>jackson-datatype-jts</artifactId>
-            <version>2.4</version>
+            <version>master</version>
         </dependency>
 
         <!--Camel-->
@@ -120,8 +125,8 @@
             <version>${camel.version}</version>
         </dependency>
         <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-smpp</artifactId>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-smpp</artifactId>
             <version>${camel.version}</version>
         </dependency>
         <dependency>
@@ -130,19 +135,19 @@
             <version>${camel.version}</version>
         </dependency>
         <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-gae</artifactId>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-gae</artifactId>
             <version>${camel.version}</version>
         </dependency>
         <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-spring-boot</artifactId>
-                <version>${camel.version}</version>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-spring-boot</artifactId>
+            <version>${camel.version}</version>
         </dependency>
         <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-spring-boot-starter</artifactId>
-                <version>2.17.0</version>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-spring-boot-starter</artifactId>
+            <version>2.17.0</version>
         </dependency>
 
         <dependency>
@@ -201,6 +206,11 @@
             <id>sonatype-oss</id>
             <url>https://oss.sonatype.org/content/groups/public</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+
     </repositories>
 
     <pluginRepositories>
