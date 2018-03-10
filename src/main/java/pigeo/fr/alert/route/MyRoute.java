@@ -17,7 +17,7 @@ public class MyRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        from("file:/padre/pialert_data/scan/")
+        from("file:/padre/geodata/pi-alert/scan/")
                 .convertBodyTo(String.class)
                 .aggregate(constant(true)).completionFromBatchConsumer().groupExchanges()
                 .bean(HandlerBean.class, "process")

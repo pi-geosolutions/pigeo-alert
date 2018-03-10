@@ -33,9 +33,9 @@ export class GeometryToolComponent implements OnInit {
   private outputCrs: string;
   private outputFormat: string;
   private intputFormat: string;
-  private allowModify: boolean;
-  private allowReset: boolean;
-  private drawInteraction: Draw;
+  allowModify: boolean;
+  allowReset: boolean;
+  drawInteraction: Draw;
   private modifyInteraction: Modify;
   private featureOverlay: VectorLayer;
 

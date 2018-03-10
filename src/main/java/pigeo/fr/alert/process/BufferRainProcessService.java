@@ -22,7 +22,7 @@ import static pigeo.fr.alert.route.Constants.*;
  * Created by florent on 04/02/18.
  */
 
-@Component("bufferRainProcessService")
+@Component()
 @Transactional
 public class BufferRainProcessService implements ProcessService {
 
