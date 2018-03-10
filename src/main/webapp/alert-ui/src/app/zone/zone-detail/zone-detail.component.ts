@@ -21,6 +21,7 @@ import Stroke from 'ol/style/stroke';
 import Style from 'ol/style/style';
 import Feature from 'ol/feature.js';
 import {GeometryService} from "../../ngeo/geom/geometry.service";
+import TileWMS from "ol/source/tilewms.js";
 
 @Component({
   selector: 'app-zone-detail',
@@ -123,13 +124,25 @@ export class ZoneDetailComponent implements OnInit {
   }
 
   private initMap(): void {
+
+    const lastRain = new TileLayer({
+      source: new TileWMS({
+        url: 'http://afo.pigeosolutions.fr/geoserver/wms',
+        params: {
+          'FORMAT': 'image/png',
+          tiled: true,
+          LAYERS: 'afo:afo_2i5_lastrain'
+        }
+      })
+    });
+
     this.map = new Map({
       layers: [
         new TileLayer({
           source: new XYZ({
             url: 'https://api.mapbox.com/styles/v1/fgravin/cjdywq8c938442sn38mir33hs/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZmdyYXZpbiIsImEiOiJjamN0bDMxaGgwam1oMndwZ2Mybmx4NXozIn0.CET5cPxi1znruX-wCJX3tg'
           })
-        })
+        }), lastRain
       ],
       view: new View({
         center: [1802796.4860563292, 541537.2241887288],
