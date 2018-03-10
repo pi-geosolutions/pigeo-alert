@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static pigeo.fr.alert.route.Constants.ALERT_REPORT_PROPERTY;
 import static pigeo.fr.alert.route.Constants.INPUT_CONFIG_SPERATOR;
 
 /**
@@ -62,9 +63,8 @@ public class HandlerBean implements org.apache.camel.Processor {
             }
 
             ProcessService service = processFactory.create(props);
-            List ids = service.process(props);
-            ids.add(3);
-            exchange.setProperty("ZONE_IDS", ids);
+            List reports = service.process(props);
+            exchange.setProperty(ALERT_REPORT_PROPERTY, reports);
         }
     }
 }

@@ -1,5 +1,7 @@
 package pigeo.fr.alert.process;
 
+import org.apache.camel.Processor;
+
 import java.util.List;
 import java.util.Map;
 

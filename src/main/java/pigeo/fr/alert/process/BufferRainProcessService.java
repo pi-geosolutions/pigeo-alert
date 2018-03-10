@@ -61,7 +61,7 @@ public class BufferRainProcessService implements ProcessService {
         List<Long> zoneIds = this.runQuery();
 
         List<Report> reports = this.reportService.createReports(zoneIds);
-        return zoneIds;
+        return reports;
     }
 
     @Override

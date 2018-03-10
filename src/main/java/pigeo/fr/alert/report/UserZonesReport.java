@@ -18,4 +18,12 @@ public class UserZonesReport extends Report {
         this.user = user;
         this.zones = zones;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public List<AlertZone> getZones() {
+        return zones;
+    }
 }
