@@ -17,7 +17,7 @@ public class AlertZone {
 
     private String name;
 
-    @Column(columnDefinition = "geometry(Point)")
+    @Column(columnDefinition = "geometry(Point, 4326)")
     private Point geom;
 
     public long getId() {

@@ -115,6 +115,8 @@ export class GeometryService {
             "name":options.crs
           }
         };
+        // just for jackson-jts
+        outputValue.srid = options.crs.replace('EPSG:', '');
         break;
 
       case 'wkt':
