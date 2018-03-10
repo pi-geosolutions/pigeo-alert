@@ -6,8 +6,8 @@ package pigeo.fr.alert.route;
 public class Constants {
     static final String INPUT_CONFIG_SPERATOR = "=";
 
-    static final String INPUT_CONFIG_PROCESS = "process";
-    static final String INPUT_CONFIG_IMAGEPATH = "imagepath";
-    static final String INPUT_CONFIG_TABLENAME = "tablename";
-    static final String INPUT_CONFIG_THRESHOLD = "threshold";
+    public static final String INPUT_CONFIG_PROCESS = "process";
+    public static final String INPUT_CONFIG_IMAGEPATH = "imagepath";
+    public static final String INPUT_CONFIG_TABLENAME = "tablename";
+    public static final String INPUT_CONFIG_THRESHOLD = "threshold";
 }

@@ -3,9 +3,10 @@ package pigeo.fr.alert.route;
 import org.apache.camel.Exchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import pigeo.fr.alert.service.FormService;
+import pigeo.fr.alert.process.BufferRainProcessService;
+import pigeo.fr.alert.process.ProcessFactory;
+import pigeo.fr.alert.process.ProcessService;
 
 import java.io.BufferedReader;
 import java.io.StringReader;

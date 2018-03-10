@@ -1,4 +1,4 @@
-package pigeo.fr.alert.route;
+package pigeo.fr.alert.process;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pigeo.fr.alert.dao.AlertZoneRepository;
 import pigeo.fr.alert.dao.UserRepository;
-import pigeo.fr.alert.domain.AlertZone;
-import pigeo.fr.alert.domain.User;
 import pigeo.fr.alert.report.Report;
 import pigeo.fr.alert.service.ReportService;
 

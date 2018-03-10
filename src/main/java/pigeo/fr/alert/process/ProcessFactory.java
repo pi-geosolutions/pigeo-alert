@@ -1,11 +1,10 @@
-package pigeo.fr.alert.route;
+package pigeo.fr.alert.process;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import static pigeo.fr.alert.route.Constants.INPUT_CONFIG_PROCESS;

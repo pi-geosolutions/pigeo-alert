@@ -1,4 +1,4 @@
-package pigeo.fr.alert.route;
+package pigeo.fr.alert.process;
 
 import java.util.List;
 import java.util.Map;
