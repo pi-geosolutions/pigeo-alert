@@ -62,7 +62,7 @@ SET postgis.gdal_enabled_drivers = 'ENABLE_ALL';
 -- -Y make loading MUCH faster by using copy statements instead of insert statements
 ```
 ```
-raster2pgsql -s 4326 -t 10x10 -I -C -x -Y "/home/florent/dev/DATA_DIR/lastrain.tif" rain_10x10 | psql -U postgres -d "eumetsat"
+raster2pgsql -s 4326 -t 10x10 -C -x -Y "/home/florent/dev/DATA_DIR/lastrain.tif" rain_10x10 | psql -U postgres -d "eumetsat"
 ```
 
 # Setup Infra
