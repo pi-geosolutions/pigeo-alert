@@ -32,7 +32,7 @@ import {UserDetailComponent} from "./user/user-detail/user-detail.component";
 import {UserSearchComponent} from "./user/user-search/user-search.component";
 import {UserService} from "./user/user.service";
 import {ApiService} from "./common/api.service";
-import { TagInputModule } from 'ng2-tag-input';
+import { TagInputModule } from 'ngx-chips';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
