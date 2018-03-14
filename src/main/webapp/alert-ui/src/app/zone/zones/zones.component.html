@@ -23,8 +23,8 @@
   </mat-paginator>
 
   <div class="footer-btn">
-    <button mat-fab class="left-align">
-      <mat-icon aria-label="Add new zone" (click)="add(zoneName.value); zoneName.value=''">add</mat-icon>
+    <button mat-fab class="left-align" (click)="add(zoneName.value); zoneName.value=''">
+      <mat-icon aria-label="Add new zone">add</mat-icon>
     </button>
     <mat-form-field [color]="'accent'">
       <input matInput #zoneName placeholder="Zone name">

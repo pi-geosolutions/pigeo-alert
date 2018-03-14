@@ -38,8 +38,8 @@
 </div>
 
 <div class="footer-btn">
-  <button mat-fab class="left-align">
-    <mat-icon aria-label="Add new user" (click)="add(userName.value); userName.value=''">add</mat-icon>
+  <button mat-fab class="left-align" (click)="add(userName.value); userName.value=''">
+    <mat-icon aria-label="Add new user">add</mat-icon>
   </button>
   <mat-form-field [color]="'accent'">
     <input matInput #userName placeholder="User lastname">
