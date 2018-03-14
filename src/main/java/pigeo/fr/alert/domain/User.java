@@ -118,6 +118,13 @@ public class User {
         return zones;
     }
 
+    @PreUpdate
+    public void onPreUpdate () {
+        // It's not real persistence, just keep trace of users were zone has been added
+        for(AlertZone zone : zones)
+            zone.add(this);
+    }
+
     public void setZones(Set<AlertZone> zones) {
         this.zones = zones;
     }

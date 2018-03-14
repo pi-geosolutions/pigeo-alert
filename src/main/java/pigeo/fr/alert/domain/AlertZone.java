@@ -57,4 +57,15 @@ public class AlertZone {
         this.users = users;
     }
 
+    void add(User user) {
+        this.users.add(user);
+    }
+
+    @PreRemove
+    private void removeZonesFromUsers() {
+        for (User u : users) {
+            u.getZones().remove(this);
+        }
+    }
+
 }

@@ -123,6 +123,10 @@ export class ZoneDetailComponent implements OnInit {
     });
   }
 
+  delete() {
+    this.zoneService.deleteZone(this.zone).subscribe(() => this.goBack());
+  }
+
   private initMap(): void {
 
     const lastRain = new TileLayer({
