@@ -7,9 +7,8 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.WKTWriter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pigeo.fr.alert.dao.AlertZoneRepository;
-import pigeo.fr.alert.domain.AlertZone;
-import pigeo.fr.alert.domain.Form;
+import pigeo.fr.alert.dao.ZoneRepository;
+import pigeo.fr.alert.domain.Zone;
 
 import java.util.List;
 
@@ -21,21 +20,21 @@ import java.util.List;
 @Transactional
 public class ZoneService {
 
-    private final AlertZoneRepository alertZoneRepository;
+    private final ZoneRepository zoneRepository;
 
-    public ZoneService(AlertZoneRepository alertZoneRepository) {
-        this.alertZoneRepository = alertZoneRepository;
+    public ZoneService(ZoneRepository zoneRepository) {
+        this.zoneRepository = zoneRepository;
     }
 
-    public AlertZone get(Long id) {
-        return alertZoneRepository.findOne(id);
+    public Zone get(Long id) {
+        return zoneRepository.findOne(id);
     }
 
-    public List<AlertZone> getAll() {
-        return alertZoneRepository.findAll();
+    public List<Zone> getAll() {
+        return zoneRepository.findAll();
     }
 
-    public JSONObject toJson(AlertZone zone) throws JSONException {
+    public JSONObject toJson(Zone zone) throws JSONException {
         WKTWriter w = new WKTWriter();
         JSONObject obj = new JSONObject();
         Point p = zone.getGeom();
@@ -45,9 +44,9 @@ public class ZoneService {
         return obj;
     }
 
-    public JSONArray toJson(List<AlertZone> zones) throws JSONException {
+    public JSONArray toJson(List<Zone> zones) throws JSONException {
         JSONArray a = new JSONArray();
-        for(AlertZone zone: zones) {
+        for(Zone zone: zones) {
             a.put(this.toJson(zone));
         }
         return a;

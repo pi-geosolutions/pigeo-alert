@@ -1,6 +1,6 @@
 package pigeo.fr.alert.report;
 
-import pigeo.fr.alert.domain.AlertZone;
+import pigeo.fr.alert.domain.Zone;
 import pigeo.fr.alert.domain.User;
 
 import java.util.List;
@@ -11,9 +11,9 @@ import java.util.List;
 public class UserZonesReport extends Report {
 
     private User user;
-    private List<AlertZone> zones;
+    private List<Zone> zones;
 
-    public UserZonesReport(User user, List<AlertZone> zones) {
+    public UserZonesReport(User user, List<Zone> zones) {
         super();
         this.user = user;
         this.zones = zones;
@@ -23,7 +23,7 @@ public class UserZonesReport extends Report {
         return user;
     }
 
-    public List<AlertZone> getZones() {
+    public List<Zone> getZones() {
         return zones;
     }
 }

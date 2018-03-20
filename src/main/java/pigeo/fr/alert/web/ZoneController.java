@@ -15,7 +15,7 @@ import pigeo.fr.alert.service.ZoneService;
  */
 
 @RestController
-@RequestMapping("/zones")
+@RequestMapping("/zoness")
 public class ZoneController {
 
     @Autowired

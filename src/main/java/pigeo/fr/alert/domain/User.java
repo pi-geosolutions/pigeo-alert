@@ -30,7 +30,8 @@ public class User {
 
     @Column
     @ManyToMany
-    private Set<AlertZone> zones;
+    @JoinTable(name = "users_zones", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "zone_id"))
+    private Set<Zone> zones;
 
     public long getId() {
         return id;
@@ -112,21 +113,19 @@ public class User {
         this.roles = roles;
     }
 
-    @ManyToMany
-    @JoinTable(name = "user_zone", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "zone_id"))
-    public Set<AlertZone> getZones() {
+    public Set<Zone> getZones() {
         return zones;
+    }
+    public void setZones(Set<Zone> zones) {
+        this.zones = zones;
     }
 
     @PreUpdate
     public void onPreUpdate () {
         // It's not real persistence, just keep trace of users were zone has been added
-        for(AlertZone zone : zones)
+        for(Zone zone : zones)
             zone.add(this);
     }
 
-    public void setZones(Set<AlertZone> zones) {
-        this.zones = zones;
-    }
 
 }

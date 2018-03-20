@@ -4,29 +4,6 @@ export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const zones = [
       {
-        id: 11,
-        name: 'Niamey',
-        geom: {"type":"Polygon","coordinates":[[[123.848876953125,8.76209006730241],[124.89257812500003,11.110189976056759],[129.364013671875,9.694674535468664],[125.386962890625,7.663868809487624],[123.848876953125,8.76209006730241]]]}
-      },
-      {
-        id: 12,
-        name: 'Bamako',
-        geom: {
-          "type": "Point",
-          "coordinates": [15, 2]
-        }
-      },
-      {
-        id: 13,
-        name: 'Tunis',
-        geom: {
-          "type": "Point",
-          "coordinates": [16, 2]
-        }
-      }
-    ];
-    const alertZones = [
-      {
         "id": 1,
         "name": "Paris",
         "geom": {
@@ -38,13 +15,13 @@ export class InMemoryDataService implements InMemoryDbService {
         },
         "_links": {
           "self": {
-            "href": "http://localhost:8080/alertZones/1"
+            "href": "http://localhost:8080/zones/1"
           },
-          "alertZone": {
-            "href": "http://localhost:8080/alertZones/1"
+          "zone": {
+            "href": "http://localhost:8080/zones/1"
           },
           "users": {
-            "href": "http://localhost:8080/alertZones/1/users"
+            "href": "http://localhost:8080/zones/1/users"
           }
         }
       },
@@ -60,13 +37,13 @@ export class InMemoryDataService implements InMemoryDbService {
         },
         "_links": {
           "self": {
-            "href": "http://localhost:8080/alertZones/2"
+            "href": "http://localhost:8080/zones/2"
           },
-          "alertZone": {
-            "href": "http://localhost:8080/alertZones/2"
+          "zone": {
+            "href": "http://localhost:8080/zones/2"
           },
           "users": {
-            "href": "http://localhost:8080/alertZones/2/users"
+            "href": "http://localhost:8080/zones/2/users"
           }
         }
       },
@@ -82,13 +59,13 @@ export class InMemoryDataService implements InMemoryDbService {
         },
         "_links": {
           "self": {
-            "href": "http://localhost:8080/alertZones/3"
+            "href": "http://localhost:8080/zones/3"
           },
-          "alertZone": {
-            "href": "http://localhost:8080/alertZones/3"
+          "zone": {
+            "href": "http://localhost:8080/zones/3"
           },
           "users": {
-            "href": "http://localhost:8080/alertZones/3/users"
+            "href": "http://localhost:8080/zones/3/users"
           }
         }
       },
@@ -104,13 +81,13 @@ export class InMemoryDataService implements InMemoryDbService {
         },
         "_links": {
           "self": {
-            "href": "http://localhost:8080/alertZones/4"
+            "href": "http://localhost:8080/zones/4"
           },
-          "alertZone": {
-            "href": "http://localhost:8080/alertZones/4"
+          "zone": {
+            "href": "http://localhost:8080/zones/4"
           },
           "users": {
-            "href": "http://localhost:8080/alertZones/4/users"
+            "href": "http://localhost:8080/zones/4/users"
           }
         }
       },
@@ -126,13 +103,13 @@ export class InMemoryDataService implements InMemoryDbService {
         },
         "_links": {
           "self": {
-            "href": "http://localhost:8080/alertZones/5"
+            "href": "http://localhost:8080/zones/5"
           },
-          "alertZone": {
-            "href": "http://localhost:8080/alertZones/5"
+          "zone": {
+            "href": "http://localhost:8080/zones/5"
           },
           "users": {
-            "href": "http://localhost:8080/alertZones/5/users"
+            "href": "http://localhost:8080/zones/5/users"
           }
         }
       },
@@ -148,13 +125,13 @@ export class InMemoryDataService implements InMemoryDbService {
         },
         "_links": {
           "self": {
-            "href": "http://localhost:8080/alertZones/6"
+            "href": "http://localhost:8080/zones/6"
           },
-          "alertZone": {
-            "href": "http://localhost:8080/alertZones/6"
+          "zone": {
+            "href": "http://localhost:8080/zones/6"
           },
           "users": {
-            "href": "http://localhost:8080/alertZones/6/users"
+            "href": "http://localhost:8080/zones/6/users"
           }
         }
       },
@@ -170,13 +147,13 @@ export class InMemoryDataService implements InMemoryDbService {
         },
         "_links": {
           "self": {
-            "href": "http://localhost:8080/alertZones/7"
+            "href": "http://localhost:8080/zones/7"
           },
-          "alertZone": {
-            "href": "http://localhost:8080/alertZones/7"
+          "zone": {
+            "href": "http://localhost:8080/zones/7"
           },
           "users": {
-            "href": "http://localhost:8080/alertZones/7/users"
+            "href": "http://localhost:8080/zones/7/users"
           }
         }
       },
@@ -192,13 +169,13 @@ export class InMemoryDataService implements InMemoryDbService {
         },
         "_links": {
           "self": {
-            "href": "http://localhost:8080/alertZones/8"
+            "href": "http://localhost:8080/zones/8"
           },
-          "alertZone": {
-            "href": "http://localhost:8080/alertZones/8"
+          "zone": {
+            "href": "http://localhost:8080/zones/8"
           },
           "users": {
-            "href": "http://localhost:8080/alertZones/8/users"
+            "href": "http://localhost:8080/zones/8/users"
           }
         }
       },
@@ -214,13 +191,13 @@ export class InMemoryDataService implements InMemoryDbService {
         },
         "_links": {
           "self": {
-            "href": "http://localhost:8080/alertZones/9"
+            "href": "http://localhost:8080/zones/9"
           },
-          "alertZone": {
-            "href": "http://localhost:8080/alertZones/9"
+          "zone": {
+            "href": "http://localhost:8080/zones/9"
           },
           "users": {
-            "href": "http://localhost:8080/alertZones/9/users"
+            "href": "http://localhost:8080/zones/9/users"
           }
         }
       }
@@ -300,7 +277,6 @@ export class InMemoryDataService implements InMemoryDbService {
     return {
       zones,
       users,
-      alertZones
     };
   }
 

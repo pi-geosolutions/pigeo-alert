@@ -16,7 +16,7 @@ const httpOptions = {
 @Injectable()
 export class ZoneService {
 
-  private zonesUrl = 'alertZones';  // URL to web api
+  private zonesUrl = 'zones';  // URL to web api
 
   constructor(
     private http: HttpClient,
@@ -29,7 +29,7 @@ export class ZoneService {
     this.messageService.add('ZoneService: fetched zones');
     return this.http.get<Zone[]>(this.zonesUrl)
       .map((response: any) =>
-        response._embedded ? response._embedded.alertZones : response)
+        response._embedded ? response._embedded.zones : response)
       .pipe(
         tap(zones => this.log(`fetched zones`)),
         catchError(this.handleError('getZones', []))

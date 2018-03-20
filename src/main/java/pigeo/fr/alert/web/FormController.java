@@ -1,17 +1,13 @@
 package pigeo.fr.alert.web;
 
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import pigeo.fr.alert.dao.AlertZoneRepository;
-import pigeo.fr.alert.domain.AlertZone;
-import pigeo.fr.alert.domain.Form;
+import pigeo.fr.alert.dao.ZoneRepository;
+import pigeo.fr.alert.domain.Zone;
 import pigeo.fr.alert.service.FormService;
 
 /**
@@ -25,15 +21,15 @@ public class FormController {
     private FormService formService;
 
     @Autowired
-    AlertZoneRepository alertZoneRepository;
+    ZoneRepository zoneRepository;
 
     @GetMapping("/form")
     @ResponseBody
     @Transactional(readOnly = true)
-    public AlertZone helloWorld() {
+    public Zone helloWorld() {
 
         WKTWriter w = new WKTWriter();
-        AlertZone zone = alertZoneRepository.findOne(1l);
+        Zone zone = zoneRepository.findOne(1l);
         return zone;
         //return this.formService.getForm("foo");
     }

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import pigeo.fr.alert.domain.AlertZone;
+import pigeo.fr.alert.domain.Zone;
 
 import java.util.List;
 
@@ -14,11 +14,11 @@ import java.util.List;
  */
 
 @RepositoryRestResource
-public interface AlertZoneRepository extends CrudRepository<AlertZone, Long> {
+public interface ZoneRepository extends CrudRepository<Zone, Long> {
 
-    public List<AlertZone> findAll();
+    public List<Zone> findAll();
 
-    @Query("select zone from AlertZone as zone where equals(zone.geom,:point) = TRUE")
-    List<AlertZone> findByPoint(@Param("point") Point point);
+    @Query("select zone from Zone as zone where equals(zone.geom,:point) = TRUE")
+    List<Zone> findByPoint(@Param("point") Point point);
 
 }

@@ -3,16 +3,17 @@ package pigeo.fr.alert.domain;
 import com.vividsolutions.jts.geom.Point;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "zones")
-public class AlertZone {
+public class Zone {
 
 
     @Id
-    @SequenceGenerator(name="alertzone_generator", sequenceName="alertzone_sequence", initialValue = 23)
-    @GeneratedValue(generator = "alertzone_generator")
+    @SequenceGenerator(name="zone_generator", sequenceName="zone_sequence", initialValue = 23)
+    @GeneratedValue(generator = "zone_generator")
     private long id;
 
     private String name;
@@ -29,8 +30,8 @@ public class AlertZone {
     }
 
     @Column
-    @ElementCollection(targetClass=User.class)
-    private Set<User> users;
+    @ManyToMany(mappedBy = "zones")
+    private Set<User> users = new HashSet<User>();
 
     public String getName() {
         return name;
@@ -48,7 +49,6 @@ public class AlertZone {
         this.geom = geom;
     }
 
-    @ManyToMany(mappedBy = "alertZones")
     public Set<User> getUsers() {
         return users;
     }

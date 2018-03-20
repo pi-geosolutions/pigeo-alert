@@ -55,7 +55,7 @@ export class UserService {
     const url = `${this.usersUrl}/${id}/zones`;
     return this.http.get<User>(url)
       .map((response: any) =>
-        response._embedded ? response._embedded.alertZones : response)
+        response._embedded ? response._embedded.zones : response)
       .pipe(
       tap(_ => this.log(`fetched zones for user id=${id}`)),
       catchError(this.handleError<User>(`getUser id=${id}`))
