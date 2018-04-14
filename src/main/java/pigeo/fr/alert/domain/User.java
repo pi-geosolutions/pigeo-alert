@@ -33,6 +33,11 @@ public class User {
     @JoinTable(name = "users_zones", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "zone_id"))
     private Set<Zone> zones;
 
+    @Column
+    @ManyToMany
+    @JoinTable(name = "users_bassins", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "bassin_gid"))
+    private Set<Bassin> bassins;
+
     public long getId() {
         return id;
     }
@@ -118,6 +123,14 @@ public class User {
     }
     public void setZones(Set<Zone> zones) {
         this.zones = zones;
+    }
+
+    public Set<Bassin> getBassins() {
+        return bassins;
+    }
+
+    public void setBassins(Set<Bassin> bassins) {
+        this.bassins = bassins;
     }
 
     @PreUpdate
