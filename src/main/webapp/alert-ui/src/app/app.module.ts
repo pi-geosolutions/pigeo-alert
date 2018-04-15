@@ -74,10 +74,16 @@ import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import 'hammerjs';
 import 'web-animations-js';
 import { HomeComponent } from './home/home.component';
+import {BassinComponent} from "./bassin/bassins/bassins.component";
+import {BassinService} from "./bassin/bassin.service";
+import {BassinDetailComponent} from "./bassin/bassin-detail/bassin-detail.component";
+import {BassinMapService} from "./bassin/bassin-map.service";
 
 @NgModule({
   declarations: [
     AppComponent,
+    BassinComponent,
+    BassinDetailComponent,
     ZoneComponent,
     ZoneDetailComponent,
     UserComponent,
@@ -175,6 +181,8 @@ import { HomeComponent } from './home/home.component';
   ],
   providers: [
     ZoneService,
+    BassinService,
+    BassinMapService,
     UserService,
     ApiService,
     MessageService,

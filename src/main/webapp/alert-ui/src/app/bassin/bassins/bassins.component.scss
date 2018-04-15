@@ -1,0 +1,39 @@
+
+.table-header {
+    min-height: 64px;
+    padding: 8px 24px 0;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    max-width: 300 px;
+}
+
+.mat-table {
+    overflow: auto;
+    max-height: 550px;
+}
+
+.mat-row:hover {
+    background-color: azure;
+    cursor: pointer;
+}
+
+[ngeo-map] {
+    padding-top: 20px;
+    width: 100%;
+    height: 600px;
+    flex: 1 10 auto;
+    margin-left: 50px;
+}
+
+.left-grid {
+    flex-basis: 600px;
+}
+
+.content-flex {
+    display: flex;
+    flex-direction: row;
+    margin-left: 50px;
+    margin-right: 30px;
+}

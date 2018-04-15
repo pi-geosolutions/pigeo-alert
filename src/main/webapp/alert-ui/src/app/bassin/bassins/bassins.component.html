@@ -1,0 +1,33 @@
+<div class="page-header mat-primary">
+  <h1>Bassins</h1>
+</div>
+
+<div class="content-flex">
+  <div class="left-grid">
+    <div class="table-header">
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+    </div>
+    <mat-table #table [dataSource]="dataSource">
+      <ng-container matColumnDef="maj_name">
+        <mat-header-cell *matHeaderCellDef> Maj Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.maj_name}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="sub_name">
+        <mat-header-cell *matHeaderCellDef> Sub Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.sub_name}} </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/bassins/detail/{{row.gid}}"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator
+                   [pageSize]="10"
+                   [pageSizeOptions]="[5, 10, 20]"
+                   [showFirstLastButtons]="true">
+    </mat-paginator>
+
+  </div>
+  <div ngeo-map [map]="map"></div>
+</div>
+

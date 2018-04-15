@@ -1,0 +1,13 @@
+<div id="search-component">
+  <h4>Bassin Search</h4>
+
+  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+
+  <ul class="search-result">
+    <li *ngFor="let bassin of bassins$ | async" >
+      <a routerLink="/detail/{{bassin.id}}">
+        {{bassin.name}}
+      </a>
+    </li>
+  </ul>
+</div>

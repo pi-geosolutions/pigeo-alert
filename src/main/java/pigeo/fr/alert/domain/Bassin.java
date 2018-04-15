@@ -1,5 +1,6 @@
 package pigeo.fr.alert.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vividsolutions.jts.geom.MultiPolygon;
 
 import javax.persistence.*;
@@ -20,13 +21,13 @@ public class Bassin {
     @GeneratedValue(generator = "bassin_generator")
     private long gid;
 
-    private String MAJ_NAME;
-    private String SUB_NAME;
-    private Double MAJ_BAS;
-    private Double SUB_BAS;
-    private Double TO_SUBBAS;
-    private Double MAJ_AREA;
-    private Double SUB_AREA;
+    private String maj_name;
+    private String sub_name;
+    private Double maj_bas;
+    private Double sub_bas;
+    private Double to_subbas;
+    private Double maj_area;
+    private Double sub_area;
 
     @Column
     @ManyToMany(mappedBy = "bassins")
@@ -43,60 +44,60 @@ public class Bassin {
         this.gid = gid;
     }
 
-    public String getMAJ_NAME() {
-        return MAJ_NAME;
+    public String getMaj_name() {
+        return maj_name;
     }
 
-    public void setMAJ_NAME(String MAJ_NAME) {
-        this.MAJ_NAME = MAJ_NAME;
+    public void setMaj_name(String maj_name) {
+        this.maj_name = maj_name;
     }
 
-    public String getSUB_NAME() {
-        return SUB_NAME;
+    public String getSub_name() {
+        return sub_name;
     }
 
-    public void setSUB_NAME(String SUB_NAME) {
-        this.SUB_NAME = SUB_NAME;
+    public void setSub_name(String sub_name) {
+        this.sub_name = sub_name;
     }
 
-    public Double getMAJ_BAS() {
-        return MAJ_BAS;
+    public Double getMaj_bas() {
+        return maj_bas;
     }
 
-    public void setMAJ_BAS(Double MAJ_BAS) {
-        this.MAJ_BAS = MAJ_BAS;
+    public void setMaj_bas(Double maj_bas) {
+        this.maj_bas = maj_bas;
     }
 
-    public Double getSUB_BAS() {
-        return SUB_BAS;
+    public Double getSub_bas() {
+        return sub_bas;
     }
 
-    public void setSUB_BAS(Double SUB_BAS) {
-        this.SUB_BAS = SUB_BAS;
+    public void setSub_bas(Double sub_bas) {
+        this.sub_bas = sub_bas;
     }
 
-    public Double getTO_SUBBAS() {
-        return TO_SUBBAS;
+    public Double getTo_subbas() {
+        return to_subbas;
     }
 
-    public void setTO_SUBBAS(Double TO_SUBBAS) {
-        this.TO_SUBBAS = TO_SUBBAS;
+    public void setTo_subbas(Double to_subbas) {
+        this.to_subbas = to_subbas;
     }
 
-    public Double getMAJ_AREA() {
-        return MAJ_AREA;
+    public Double getMaj_area() {
+        return maj_area;
     }
 
-    public void setMAJ_AREA(Double MAJ_AREA) {
-        this.MAJ_AREA = MAJ_AREA;
+    public void setMaj_area(Double maj_area) {
+        this.maj_area = maj_area;
     }
 
-    public Double getSUB_AREA() {
-        return SUB_AREA;
+    public Double getSub_area() {
+        return sub_area;
     }
 
-    public void setSUB_AREA(Double SUB_AREA) {
-        this.SUB_AREA = SUB_AREA;
+    public void setSub_area(Double sub_area) {
+        this.sub_area = sub_area;
     }
 
     public Set<User> getUsers() {
