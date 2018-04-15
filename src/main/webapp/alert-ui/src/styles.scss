@@ -147,3 +147,25 @@ mat-toolbar {
 .small-form.container {
     max-width: 600px;
 }
+
+
+.container tag-input {
+    .bootstrap.ng2-tag-input {
+        border-bottom: 1px solid #959595;
+        margin-bottom: 20px;
+    }
+}
+
+ng2-dropdown-menu {
+    .ng2-dropdown-menu {
+        max-height: 250px !important;
+    }
+    .ng2-menu-item {
+        height: 20px !important;
+        line-height: 20px !important;
+        &:hover {
+            background-color: #607D8B;
+        }
+    }
+
+}

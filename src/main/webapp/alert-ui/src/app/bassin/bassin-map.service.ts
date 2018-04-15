@@ -5,6 +5,7 @@ import TileLayer from "ol/layer/tile.js";
 import XYZ from "ol/source/xyz.js";
 import TileWMS from "ol/source/tilewms.js";
 import Stroke from "ol/style/stroke";
+import Fill from 'ol/style/fill';
 import Style from "ol/style/style";
 import Feature from "ol/feature.js";
 import {Bassin} from "./bassin";
@@ -48,9 +49,24 @@ export class BassinMapService {
 
   getStyle(): Style {
     return new Style({
+      fill: new Fill({
+        color: 'rgba(63, 81, 181, 0.2)'
+      }),
       stroke: new Stroke({
-        color: 'black',
+        color: 'rgba(63, 81, 181, 1)',
         width: 1
+      })
+    });
+  }
+
+  getHLStyle(): Style {
+    return new Style({
+      fill: new Fill({
+        color: 'rgba(63, 81, 181, 0.2)'
+      }),
+      stroke: new Stroke({
+        color: 'orange',
+        width: 2
       })
     });
   }
@@ -63,7 +79,6 @@ export class BassinMapService {
     const feature = new Feature({
       geometry: geom
     });
-    feature.setStyle(this.getStyle());
     source.addFeature(feature);
     return feature;
   }

@@ -7,6 +7,8 @@ import {Zone} from "../../zone/zone";
 import {UserService} from "../user.service";
 import {tap} from "rxjs/operators/tap";
 import {ZoneService} from "../../zone/zone.service";
+import {BassinService} from "../../bassin/bassin.service";
+import {Bassin} from "../../bassin/bassin";
 
 @Component({
   selector: 'app-user-detail',
@@ -17,7 +19,10 @@ export class UserDetailComponent implements OnInit {
 
   user: User;
   allZones: Zone[];
+  allBassins: Bassin[];
   userZones: Zone[];
+  userBassins: Bassin[];
+  pristineBassins: Bassin[];
   pristineZones: Zone[];
   userForm: FormGroup;
   iterableDiffer: any;
@@ -29,6 +34,7 @@ export class UserDetailComponent implements OnInit {
     private location: Location,
     private fb: FormBuilder,
     private zoneService: ZoneService,
+    private bassinService: BassinService,
     private iterableDiffers: IterableDiffers
   ) {
     this.iterableDiffer = this.iterableDiffers.find([]).create(null);
@@ -56,11 +62,14 @@ export class UserDetailComponent implements OnInit {
       });
     });
     this.getAllZones();
+    this.getAllBassins();
     this.getUserZones(id);
+    this.getUserBassins(id);
   }
 
   ngDoCheck() {
-    let changes = this.iterableDiffer.diff(this.userZones);
+    let changes = this.iterableDiffer.diff(this.userZones) ||
+      this.iterableDiffer.diff(this.userBassins);
     if (changes) {
       if(!this.firstChangeCheck) {
         this.firstChangeCheck = true;
@@ -82,6 +91,11 @@ export class UserDetailComponent implements OnInit {
       .subscribe(zones => this.allZones = zones);
   }
 
+  getAllBassins(): void {
+    this.bassinService.getBassins()
+      .subscribe(bassins => this.allBassins = bassins);
+  }
+
   getUserZones(id: number) {
     return this.userService.getZones(id).subscribe(zones => {
       // fix dirtyCheck if no initial zone
@@ -93,6 +107,17 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
+  getUserBassins(id: number) {
+    return this.userService.getBassins(id).subscribe(bassins => {
+      // fix dirtyCheck if no initial bassin
+      if(!bassins.length) {
+        this.firstChangeCheck = true;
+      }
+      this.userBassins = bassins;
+      this.pristineBassins = bassins;
+    });
+  }
+
   goBack(): void {
     this.location.back();
   }
@@ -101,8 +126,10 @@ export class UserDetailComponent implements OnInit {
     this.user = this.prepareSaveUser();
     this.userService.updateUser(this.user).subscribe(() => {
       this.userService.putZones(this.user, this.userZones).subscribe(() => {
-        this.goBack();
       });
+      this.userService.putBassins(this.user, this.userBassins).subscribe(() => {
+      });
+      this.goBack();
     });
   }
 
@@ -127,6 +154,10 @@ export class UserDetailComponent implements OnInit {
     if(this.userZones !== this.pristineZones) {
       this.firstChangeCheck = false;
       this.userZones = this.pristineZones;
+    }
+    if(this.userBassins !== this.pristineBassins) {
+      this.firstChangeCheck = false;
+      this.userBassins = this.pristineBassins;
     }
     this.userForm.reset({
       firstname: this.user.firstname,

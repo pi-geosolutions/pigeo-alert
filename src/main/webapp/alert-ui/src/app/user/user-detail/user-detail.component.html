@@ -37,18 +37,37 @@
       </mat-form-field>
     </form>
 
+    <!--Zones input-->
     <tag-input [(ngModel)]="userZones"
                theme='bootstrap'
                [identifyBy]="'id'"
                [displayBy]="'name'"
                [autocomplete]="true"
-               [placeholder]="'Zones'"
+               placeholder="Add zones"
+               secondaryPlaceholder="Subscribe to zones"
                [onlyFromAutocomplete]="true">
       <tag-input-dropdown
               [showDropdownIfEmpty]="true"
               [identifyBy]="'id'"
               [displayBy]="'name'"
               [(autocompleteItems)]="allZones">
+      </tag-input-dropdown>
+    </tag-input>
+
+    <!--Bassins input-->
+    <tag-input [(ngModel)]="userBassins"
+               theme='bootstrap'
+               [identifyBy]="'gid'"
+               [displayBy]="'maj_name'"
+               [autocomplete]="true"
+               placeholder="Add bassins"
+               secondaryPlaceholder="Subscribe to bassins"
+               [onlyFromAutocomplete]="true">
+      <tag-input-dropdown
+              [showDropdownIfEmpty]="true"
+              [identifyBy]="'gid'"
+              [displayBy]="'maj_name'"
+              [(autocompleteItems)]="allBassins">
       </tag-input-dropdown>
     </tag-input>
   </div>

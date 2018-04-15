@@ -56,6 +56,7 @@ export class BassinDetailComponent implements OnInit {
     });
     this.map = this.bassinMapService.initMap();
     this.featureOverlay = this.foService.getFeatureOverlay(this.map);
+    this.featureOverlay.setStyle(this.bassinMapService.getStyle());
   }
 
   getBassin() {

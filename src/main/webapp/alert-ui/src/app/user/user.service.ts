@@ -9,6 +9,7 @@ import {tap} from "rxjs/operators/tap";
 import {catchError} from "rxjs/operators/catchError";
 import {HttpHeaders} from "@angular/common/http";
 import {ApiService} from "../common/api.service";
+import {Bassin} from "../bassin/bassin";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -62,6 +63,17 @@ export class UserService {
     );
   }
 
+  getBassins(id: number): Observable<Bassin[]> {
+    const url = `${this.usersUrl}/${id}/bassins`;
+    return this.http.get<User>(url)
+      .map((response: any) =>
+        response._embedded ? response._embedded.bassins : response)
+      .pipe(
+      tap(_ => this.log(`fetched bassins for user id=${id}`)),
+      catchError(this.handleError<User>(`getUser id=${id}`))
+    );
+  }
+
   /* GET users whose name contains search term */
   searchUsers(term: string): Observable<User[]> {
     if (!term.trim()) {
@@ -106,6 +118,14 @@ export class UserService {
     return this.http.put(`${this.usersUrl}/${user.id}/zones`, urisList, urisHttpOptions).pipe(
       tap(_ => this.log(`put zone for user id=${user.id}`)),
       catchError(this.handleError<User>('putZones'))
+    );
+  }
+
+  putBassins (user: User, bassins: Bassin[]): Observable<any> {
+    const urisList = bassins.map(bassin => bassin.gid).join('\n');
+    return this.http.put(`${this.usersUrl}/${user.id}/bassins`, urisList, urisHttpOptions).pipe(
+      tap(_ => this.log(`put bassin for user id=${user.id}`)),
+      catchError(this.handleError<User>('putBassins'))
     );
   }
 

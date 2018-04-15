@@ -17,7 +17,9 @@ export class FeatureOverlayService {
   private createFeatureOverlay(): VectorLayer {
     return new VectorLayer({
       source: new VectorSource({
-        useSpatialIndex: true
+        useSpatialIndex: true,
+        wrapX: false,
+        zIndex: 10
       }),
       name: 'geometry-tool-layer',
       style: [
@@ -56,7 +58,8 @@ export class FeatureOverlayService {
 
     if(!this.groups_[id]) {
       const layer: VectorLayer = this.createFeatureOverlay();
-      layer.setMap(map);
+      map.addLayer(layer);
+      // layer.setMap(map);
       this.groups_[id] = layer;
     }
     return this.groups_[id];
