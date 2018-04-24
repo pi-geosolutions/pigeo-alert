@@ -58,7 +58,7 @@
     <tag-input [(ngModel)]="userBassins"
                theme='bootstrap'
                [identifyBy]="'gid'"
-               [displayBy]="'maj_name'"
+               [displayBy]="'fullname'"
                [autocomplete]="true"
                placeholder="Add bassins"
                secondaryPlaceholder="Subscribe to bassins"
@@ -66,7 +66,7 @@
       <tag-input-dropdown
               [showDropdownIfEmpty]="true"
               [identifyBy]="'gid'"
-              [displayBy]="'maj_name'"
+              [displayBy]="'fullname'"
               [(autocompleteItems)]="allBassins">
       </tag-input-dropdown>
     </tag-input>

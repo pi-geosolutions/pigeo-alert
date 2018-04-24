@@ -7,6 +7,7 @@ export class Bassin {
   to_subbas?: number;
   maj_name: string;
   sub_name: string;
+  fullname?: string;
 
   set the_geom(value) {
     this.the_geom = value;
