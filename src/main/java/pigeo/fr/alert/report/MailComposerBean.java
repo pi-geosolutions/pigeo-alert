@@ -32,7 +32,7 @@ public class MailComposerBean implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
 
-        UserZonesReport report = exchange.getIn().getBody(UserZonesReport.class);
+        Report report = exchange.getIn().getBody(Report.class);
         Map<String, Object> input = new HashMap<String, Object>();
         input.put("report", report);
 
@@ -43,7 +43,7 @@ public class MailComposerBean implements Processor {
         cfg.setLocale(Locale.US);
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         StringWriter stringWriter = new StringWriter();
-        Template template = cfg.getTemplate(EMAIL_TEMPLATE);
+        Template template = cfg.getTemplate(report.getMailTemplate());
         template.process(input, stringWriter);
 
         exchange.getOut().setHeader("subject", "PADRE Vigilance warning");
