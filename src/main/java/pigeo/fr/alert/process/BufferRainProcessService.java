@@ -14,7 +14,6 @@ import pigeo.fr.alert.domain.User;
 import pigeo.fr.alert.domain.Zone;
 import pigeo.fr.alert.report.Report;
 import pigeo.fr.alert.report.UserZonesReport;
-import pigeo.fr.alert.service.ReportService;
 
 import java.sql.Types;
 import java.util.ArrayList;
@@ -55,9 +54,6 @@ public class BufferRainProcessService implements ProcessService {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    ReportService reportService;
 
     @Override
     public List process(Map<String, String> config) {
