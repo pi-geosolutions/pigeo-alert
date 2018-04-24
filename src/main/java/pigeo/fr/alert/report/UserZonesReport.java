@@ -10,20 +10,19 @@ import java.util.List;
  */
 public class UserZonesReport extends Report {
 
-    private User user;
     private List<Zone> zones;
 
     public UserZonesReport(User user, List<Zone> zones) {
-        super();
-        this.user = user;
+        super(user);
         this.zones = zones;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     public List<Zone> getZones() {
         return zones;
+    }
+
+    @Override
+    public String getMailTemplate() {
+        return "template/buffer.html";
     }
 }
