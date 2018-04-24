@@ -30,6 +30,8 @@ export class BassinService {
     return this.http.get<Bassin[]>(this.bassinsUrl)
       .map((response: any) =>
         response._embedded ? response._embedded.bassins : response)
+      .do((bassins: Bassin[]) =>
+        bassins.forEach( bassin => bassin.fullname = `${bassin.maj_name} ${bassin.sub_name}`))
       .pipe(
         tap(bassins => this.log(`fetched bassins`)),
         catchError(this.handleError('getBassins', []))
