@@ -4,7 +4,6 @@ import org.apache.camel.Exchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
-import pigeo.fr.alert.process.BufferRainProcessService;
 import pigeo.fr.alert.process.ProcessFactory;
 import pigeo.fr.alert.process.ProcessService;
 
@@ -28,9 +27,6 @@ public class HandlerBean implements org.apache.camel.Processor {
 
     @Autowired
     private ProcessFactory processFactory;
-
-    @Autowired
-    private BufferRainProcessService bufferRainProcessService;
 
     @Override
     public void process(Exchange exchange) throws Exception {

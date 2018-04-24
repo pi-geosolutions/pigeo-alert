@@ -1,14 +1,19 @@
 package pigeo.fr.alert.process;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pigeo.fr.alert.dao.ZoneRepository;
 import pigeo.fr.alert.dao.UserRepository;
+import pigeo.fr.alert.dao.ZoneRepository;
+import pigeo.fr.alert.domain.User;
+import pigeo.fr.alert.domain.Zone;
 import pigeo.fr.alert.report.Report;
+import pigeo.fr.alert.report.UserZonesReport;
 import pigeo.fr.alert.service.ReportService;
 
 import java.sql.Types;
@@ -60,7 +65,7 @@ public class BufferRainProcessService implements ProcessService {
         this.loadConfig(config);
         List<Long> zoneIds = this.runQuery();
 
-        List<Report> reports = this.reportService.createReports(zoneIds);
+        List<Report> reports = this.createReports(zoneIds);
         return reports;
     }
 
@@ -76,6 +81,27 @@ public class BufferRainProcessService implements ProcessService {
                     " missing property for process " + config.get(INPUT_CONFIG_PROCESS));
         }
         sql = sql.replace("${tableName}", tableName);
+    }
+
+    public List<Report> createReports(List<Long> zoneIds) {
+        List<Report> reports = new ArrayList<Report>();
+
+        // Gather all zones concerned by user
+        ListMultimap<User, Zone> multimap = ArrayListMultimap.create();
+        for(Long id: zoneIds) {
+            Zone zone = zoneRepository.findOne(id);
+            List<User> users = userRepository.findByZones_Id(id);
+            for(User user: users) {
+                multimap.put(user, zone);
+            }
+        }
+
+        // Create one report per user, mentionning all zones
+        for(User user : multimap.keySet()) {
+            UserZonesReport report = new UserZonesReport(user,  multimap.get(user));
+            reports.add(report);
+        }
+        return reports;
     }
 
     private List<Long> runQuery() {
