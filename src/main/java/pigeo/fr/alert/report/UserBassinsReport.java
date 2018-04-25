@@ -1,7 +1,7 @@
 package pigeo.fr.alert.report;
 
-import pigeo.fr.alert.domain.Bassin;
 import pigeo.fr.alert.domain.User;
+import pigeo.fr.alert.report.entity.BassinReportModel;
 
 import java.util.List;
 
@@ -10,15 +10,15 @@ import java.util.List;
  */
 public class UserBassinsReport extends Report {
 
-    private List<Bassin> bassins;
+    private List<BassinReportModel> bassins;
 
-    public UserBassinsReport(User user, List<Bassin> bassins) {
+    public UserBassinsReport(User user, List<BassinReportModel> bassins) {
         super(user);
         this.bassins = bassins;
     }
 
 
-    public List<Bassin> getBassins() {
+    public List<BassinReportModel> getBassins() {
         return bassins;
     }
 

@@ -14,9 +14,12 @@ import pigeo.fr.alert.domain.Bassin;
 import pigeo.fr.alert.domain.User;
 import pigeo.fr.alert.report.Report;
 import pigeo.fr.alert.report.UserBassinsReport;
+import pigeo.fr.alert.report.entity.BassinReportModel;
 
 import java.sql.Types;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +65,7 @@ public class BassinCumulProcessService implements ProcessService {
     public List process(Map<String, String> config) {
         log.info("bassinCumulProcessService CREATED");
         this.loadConfig(config);
-        List<Long> bassinIds = this.runQuery();
+        List< Map<String, Object>> bassinIds = this.runQuery();
 
         List<Report> reports = this.createReports(bassinIds);
         return reports;
@@ -82,17 +85,19 @@ public class BassinCumulProcessService implements ProcessService {
         sql = sql.replace("${tableName}", tableName);
     }
 
-    @Override
-    public List<Report> createReports(List<Long> bassinIds) {
+    public List<Report> createReports(List< Map<String, Object>> bassinsRef) {
         List<Report> reports = new ArrayList<Report>();
 
         // Gather all bassins concerned by user
-        ListMultimap<User, Bassin> multimap = ArrayListMultimap.create();
-        for(Long id: bassinIds) {
+        ListMultimap<User, BassinReportModel> multimap = ArrayListMultimap.create();
+        for( Map<String, Object> bassinRef: bassinsRef) {
+            Long id = (Long)bassinRef.get("id");
             Bassin bassin = bassinRepository.findOne(id);
+            BassinReportModel model = new BassinReportModel(bassin);
+            model.setArea((String)bassinRef.get("area"));
             List<User> users = userRepository.findByBassins_Gid(id);
             for(User user: users) {
-                multimap.put(user, bassin);
+                multimap.put(user, model);
             }
         }
 
@@ -104,12 +109,17 @@ public class BassinCumulProcessService implements ProcessService {
         return reports;
     }
 
-    private List<Long> runQuery() {
-        List<Long> bassins = new ArrayList<Long>();
+    private List< Map<String, Object>> runQuery() {
+        List< Map<String, Object>> bassins = new ArrayList<>();
 
         jdbcTemplate.query(
                 sql, new Object[] {this.threshold}, new int[] {Types.DOUBLE},
-                (rs, rowNum) -> rs.getLong("gid")
+                (rs, rowNum) -> {
+                    Map<String, Object> map = new HashMap();
+                    map.put("id", rs.getLong("gid"));
+                    map.put("area", new DecimalFormat("##.##").format(rs.getDouble("area") / 1000000));
+                    return map;
+                }
         ).forEach(id -> bassins.add(id));
         return bassins;
     }

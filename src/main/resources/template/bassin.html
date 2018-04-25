@@ -7,10 +7,10 @@
 
 <p>Dear ${report.user.firstname} ${report.user.lastname},</p>
 <p>You subscribed to some Bassins that have been detected as potential warning:</p>
-<p>Eumetsat rain estimation for last 6 hours is over 50mm: </p>
+<p>Eumetsat rain estimation for last 6 hours is over 50mm for: </p>
 <ul>
     <#list report.bassins as bassin>
-        <li><b>${bassin.maj_name} ${bassin.sub_name}</b></li>
+        <li><b>${bassin.majname} ${bassin.subname}</b> : ${bassin.area} km²</li>
     </#list>
 </ul>
 

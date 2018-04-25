@@ -15,5 +15,5 @@ public interface ProcessService {
 
     void loadConfig(Map<String, String> config);
 
-    List<Report> createReports(List<Long> ids);
+//    List<Report> createReports(List<Object> ids);
 }
