@@ -168,7 +168,7 @@ export class UserDetailComponent implements OnInit {
   deleteUserZone(id: number) {
     // this.fzones.value.splice(1, this.fzones.value.findIndex(zone => zone.id === id))
     this.fzones.removeAt(this.fzones.value.findIndex(zone => zone.id === id));
-    // this.onFzonesChange();
+    this.onFzonesChange();
   }
 
   goBack(): void {
