@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,13 +32,23 @@ public class User {
 
     @Column
     @ManyToMany
-    @JoinTable(name = "users_zones", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "zone_id"))
-    private Set<Zone> zones;
-
-    @Column
-    @ManyToMany
     @JoinTable(name = "users_bassins", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "bassin_gid"))
     private Set<Bassin> bassins;
+
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<UserZone> zones = new ArrayList<>();
+
+    public List<UserZone> getZones() {
+        return zones;
+    }
+
+    public void setZones(List<UserZone> zones) {
+        this.zones = zones;
+    }
 
     public long getId() {
         return id;
@@ -118,13 +130,6 @@ public class User {
         this.roles = roles;
     }
 
-    public Set<Zone> getZones() {
-        return zones;
-    }
-    public void setZones(Set<Zone> zones) {
-        this.zones = zones;
-    }
-
     public Set<Bassin> getBassins() {
         return bassins;
     }
@@ -133,12 +138,6 @@ public class User {
         this.bassins = bassins;
     }
 
-    @PreUpdate
-    public void onPreUpdate () {
-        // It's not real persistence, just keep trace of users were zone has been added
-        for(Zone zone : zones)
-            zone.add(this);
-    }
 
 
 }

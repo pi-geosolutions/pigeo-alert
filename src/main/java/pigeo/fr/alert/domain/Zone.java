@@ -3,8 +3,8 @@ package pigeo.fr.alert.domain;
 import com.vividsolutions.jts.geom.Point;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "zones")
@@ -21,6 +21,21 @@ public class Zone {
     @Column(columnDefinition = "geometry(Point, 4326)")
     private Point geom;
 
+    @OneToMany(
+            mappedBy = "zone",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<UserZone> users = new ArrayList<>();
+
+    public List<UserZone> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserZone> users) {
+        this.users = users;
+    }
+
     public long getId() {
         return id;
     }
@@ -29,9 +44,6 @@ public class Zone {
         this.id = id;
     }
 
-    @Column
-    @ManyToMany(mappedBy = "zones")
-    private Set<User> users = new HashSet<User>();
 
     public String getName() {
         return name;
@@ -49,23 +61,5 @@ public class Zone {
         this.geom = geom;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    void add(User user) {
-        this.users.add(user);
-    }
-
-    @PreRemove
-    private void removeZonesFromUsers() {
-        for (User u : users) {
-            u.getZones().remove(this);
-        }
-    }
 
 }

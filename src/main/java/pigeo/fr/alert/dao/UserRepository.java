@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByUsername(String username);
-    List<User> findByZones_Id(Long zoneId);
+//    List<User> findByZones_Id(Long zoneId);
     List<User> findByBassins_Gid(Long bassinId);
 
 }
