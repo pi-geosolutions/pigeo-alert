@@ -1,13 +1,13 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {User} from "./user";
 import {Zone} from "../zone/zone";
 import {Observable} from "rxjs/Observable";
 import {of} from "rxjs/observable/of";
+import {forkJoin} from "rxjs/observable/forkJoin";
 import {MessageService} from "../message.service";
 import {tap} from "rxjs/operators/tap";
 import {catchError} from "rxjs/operators/catchError";
-import {HttpHeaders} from "@angular/common/http";
 import {ApiService} from "../common/api.service";
 import {Bassin} from "../bassin/bassin";
 
@@ -23,6 +23,7 @@ const urisHttpOptions = {
 export class UserService {
 
   private usersUrl = 'users';
+  private userzonesUrl = 'userZones';
   private zonesUrl = 'zones';
 
   constructor(
@@ -31,6 +32,7 @@ export class UserService {
     private messageService: MessageService) {
     this.usersUrl = apiService.getBaseApi() + this.usersUrl;
     this.zonesUrl = apiService.getBaseApi() + this.zonesUrl;
+    this.userzonesUrl = apiService.getBaseApi() + this.userzonesUrl;
   }
 
   getUsers(): Observable<User[]> {
@@ -52,14 +54,31 @@ export class UserService {
     );
   }
 
-  getZones(id: number): Observable<Zone[]> {
+  /**
+   * Return the zones of a user.
+   * Get the user, then parse all userZones to return an array of Zones
+   *
+   * @param id User id
+   */
+  getZones(id: number): Observable<any> {
     const url = `${this.usersUrl}/${id}/zones`;
     return this.http.get<User>(url)
-      .map((response: any) =>
-        response._embedded ? response._embedded.zones : response)
+      .mergeMap((response: any) => {
+        const zones = response._embedded ? response._embedded.userZones : response;
+        const zonesObs = zones.map(z => this.getUserZone(z.id));
+        return forkJoin(...zonesObs);
+      })
       .pipe(
-      tap(_ => this.log(`fetched zones for user id=${id}`)),
-      catchError(this.handleError<User>(`getUser id=${id}`))
+        tap(_ => this.log(`fetched zones for user id=${id}`)),
+        catchError(this.handleError<User>(`getUser id=${id}`))
+      );
+  }
+
+  getUserZone(id: number): Observable<Zone> {
+    const url = `${this.userzonesUrl}/${id}/zone`;
+    return this.http.get<Zone>(url).pipe(
+      tap(_ => this.log(`fetched zone id=${id}`)),
+      catchError(this.handleError<Zone>(`getUserZone id=${id}`))
     );
   }
 
@@ -71,9 +90,9 @@ export class UserService {
       .do((bassins: Bassin[]) =>
         bassins.forEach( bassin => bassin.fullname = `${bassin.maj_name} ${bassin.sub_name}`))
       .pipe(
-      tap(_ => this.log(`fetched bassins for user id=${id}`)),
-      catchError(this.handleError<User>(`getUser id=${id}`))
-    );
+        tap(_ => this.log(`fetched bassins for user id=${id}`)),
+        catchError(this.handleError<User>(`getUser id=${id}`))
+      );
   }
 
   /* GET users whose name contains search term */
