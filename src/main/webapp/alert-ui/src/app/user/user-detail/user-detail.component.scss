@@ -1,3 +1,18 @@
 .card-container {
     padding: 30px;
 }
+
+mat-list-item {
+    input {
+        text-align: center;
+    }
+}
+
+.col-header {
+    color: rgba(0,0,0,.38);
+    width: 100%;
+}
+
+.mat-option:hover:not(.mat-option-disabled) {
+    background-color: #cfd8dc;
+}

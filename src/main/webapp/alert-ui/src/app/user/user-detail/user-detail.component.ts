@@ -1,14 +1,16 @@
-import {Component, OnInit, IterableDiffers} from "@angular/core";
+import {Component, OnInit, IterableDiffers, ElementRef} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
-import {FormBuilder, Validators, FormGroup} from "@angular/forms";
-import {User} from "../user";
+import {FormBuilder, Validators, FormGroup, FormArray} from "@angular/forms";
+import {User, UserZone} from "../user";
 import {Zone} from "../../zone/zone";
 import {UserService} from "../user.service";
 import {tap} from "rxjs/operators/tap";
+import {forkJoin} from "rxjs/observable/forkJoin";
 import {ZoneService} from "../../zone/zone.service";
 import {BassinService} from "../../bassin/bassin.service";
 import {Bassin} from "../../bassin/bassin";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-user-detail',
@@ -20,10 +22,10 @@ export class UserDetailComponent implements OnInit {
   user: User;
   allZones: Zone[];
   allBassins: Bassin[];
-  userZones: Zone[];
+  userZones: UserZone[];
   userBassins: Bassin[];
   pristineBassins: Bassin[];
-  pristineZones: Zone[];
+  inputZones: Zone[];
   userForm: FormGroup;
   iterableDiffer: any;
   firstChangeCheck: boolean = false;
@@ -33,6 +35,7 @@ export class UserDetailComponent implements OnInit {
     private userService: UserService,
     private location: Location,
     private fb: FormBuilder,
+    private el: ElementRef,
     private zoneService: ZoneService,
     private bassinService: BassinService,
     private iterableDiffers: IterableDiffers
@@ -46,31 +49,38 @@ export class UserDetailComponent implements OnInit {
       firstname: ['', Validators.required ],
       lastname: ['', Validators.required ],
       email: ['', Validators.required ],
-      phone: ['', Validators.required ]
+      phone: ['', Validators.required ],
+      zone: [''],
+      fzones: this.fb.array([])
     });
   }
+
+  get fzones(): FormArray {
+    return this.userForm.get('fzones') as FormArray;
+  };
 
   ngOnInit(): void {
     const id = +this.route.snapshot.paramMap.get('id');
 
     this.getUser(id).subscribe(() => {
-      this.userForm.setValue({
+      this.userForm.reset({
         firstname: this.user.firstname,
         lastname: this.user.lastname,
         phone: this.user.phone,
         email: this.user.email,
+        zone: ''
       });
     });
-    this.getAllZones();
+    forkJoin(this.getAllZones(), this.getUserZones(id))
+      .subscribe(() => this.updateInputZones());
     this.getAllBassins();
-    this.getUserZones(id);
     this.getUserBassins(id);
   }
 
   ngDoCheck() {
-    let changes = this.iterableDiffer.diff(this.userZones) ||
-      this.iterableDiffer.diff(this.userBassins);
-    if (changes) {
+    // const zoneChange = this.userZones && this.iterableDiffer.diff(this.userZones);
+    const bassinChange = this.userBassins && this.iterableDiffer.diff(this.userBassins);
+    if (bassinChange) {
       if(!this.firstChangeCheck) {
         this.firstChangeCheck = true;
         return;
@@ -86,9 +96,11 @@ export class UserDetailComponent implements OnInit {
       );
   }
 
-  getAllZones(): void {
-    this.zoneService.getZones()
-      .subscribe(zones => this.allZones = zones);
+  getAllZones(): Observable<Zone[]> {
+    return this.zoneService.getZones()
+      .do(zones => {
+        this.allZones = zones;
+      });
   }
 
   getAllBassins(): void {
@@ -97,14 +109,36 @@ export class UserDetailComponent implements OnInit {
   }
 
   getUserZones(id: number) {
-    return this.userService.getZones(id).subscribe(zones => {
+    return this.userService.getFlatZones(id).do(zones => {
       // fix dirtyCheck if no initial zone
-      if(!zones.length) {
-        this.firstChangeCheck = true;
-      }
       this.userZones = zones;
-      this.pristineZones = zones;
+      this.populateFzones();
     });
+  }
+
+  populateFzones() {
+    const uzFGs = this.userZones.map(zone => this.fb.group({
+      radius: zone.radius,
+      threshold: zone.threshold,
+      id: zone.zone.id,
+      test: 'toto',
+      name: zone.zone.name
+    }));
+    const uzFormArray = this.fb.array(uzFGs);
+    console.log(uzFormArray);
+    uzFormArray.value.forEach(a => console.log(a.id))
+    this.userForm.setControl('fzones', uzFormArray);
+  }
+
+  onFzonesChange() {
+    this.userForm.markAsDirty();
+    this.updateInputZones();
+  }
+
+  private updateInputZones() {
+    this.inputZones = this.allZones.filter(zone => {
+      return !this.fzones.value.find(z => z.id == zone.id)
+    })
   }
 
   getUserBassins(id: number) {
@@ -118,6 +152,25 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
+  addUserZone(zone: Zone) {
+    this.fzones.push(this.fb.group({
+      radius: 30,
+      threshold: 10,
+      id: zone.id,
+      name: zone.name
+    }));
+    this.userForm.patchValue({
+      zone: ''
+    });
+    this.onFzonesChange();
+  }
+
+  deleteUserZone(id: number) {
+    // this.fzones.value.splice(1, this.fzones.value.findIndex(zone => zone.id === id))
+    this.fzones.removeAt(this.fzones.value.findIndex(zone => zone.id === id));
+    // this.onFzonesChange();
+  }
+
   goBack(): void {
     this.location.back();
   }
@@ -125,7 +178,7 @@ export class UserDetailComponent implements OnInit {
   onSubmit() {
     this.user = this.prepareSaveUser();
     this.userService.updateUser(this.user).subscribe(() => {
-      this.userService.putZones(this.user, this.userZones).subscribe(() => {
+      this.userService.putZones(this.user, this.fzones).subscribe(() => {
       });
       this.userService.putBassins(this.user, this.userBassins).subscribe(() => {
       });
@@ -151,10 +204,6 @@ export class UserDetailComponent implements OnInit {
   }
 
   revert() {
-    if(this.userZones !== this.pristineZones) {
-      this.firstChangeCheck = false;
-      this.userZones = this.pristineZones;
-    }
     if(this.userBassins !== this.pristineBassins) {
       this.firstChangeCheck = false;
       this.userBassins = this.pristineBassins;
@@ -164,6 +213,9 @@ export class UserDetailComponent implements OnInit {
       lastname: this.user.lastname,
       phone: this.user.phone,
       email: this.user.email,
+      zone: '',
+      fzones: this.fb.array([])
     });
+    this.populateFzones();
   }
 }

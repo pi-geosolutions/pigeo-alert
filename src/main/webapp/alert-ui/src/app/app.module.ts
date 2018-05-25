@@ -114,7 +114,7 @@ import {BassinMapService} from "./bassin/bassin-map.service";
     //   }
     // ) : [],
 
-    // MatAutocompleteModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
@@ -148,7 +148,7 @@ import {BassinMapService} from "./bassin/bassin-map.service";
 
   ],
   exports: [
-    // MatAutocompleteModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,

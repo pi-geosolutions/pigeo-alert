@@ -35,9 +35,47 @@
       <mat-form-field class="full-width">
         <input matInput placeholder="Email" formControlName="email">
       </mat-form-field>
+
+      <!--Zone auto-complete-->
+      <mat-card>
+        <mat-card-title>
+          Zones
+        </mat-card-title>
+        <mat-card-content>
+          <mat-form-field class="full-width">
+            <input id="zoneSelect" type="text" placeholder="Subscribe to zones"
+                   matInput formControlName="zone" [matAutocomplete]="auto">
+          </mat-form-field>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let zone of inputZones" [value]="zone.name"
+                        (onSelectionChange)="addUserZone(zone)">
+              {{ zone.name }}
+            </mat-option>
+          </mat-autocomplete>
+
+          <mat-nav-list formArrayName="fzones">
+            <mat-list-item>
+              <a matLine>Zone name</a>
+              <div class="col-header">Radius (km)</div>
+              <div class="col-header">Threshold (mm)</div>
+            </mat-list-item>
+            <mat-list-item *ngFor="let userzone of fzones.controls; let i=index" [formGroupName]="i">
+              <a matLine>{{ userzone.value.name }}</a>
+              <input type="number" matInput formControlName="radius">
+              <input type="number" matInput formControlName="threshold">
+              <button mat-icon-button (click)="deleteUserZone(userzone.value.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-card-content>
+      </mat-card>
     </form>
 
+
+
     <!--Zones input-->
+<!--
     <tag-input [(ngModel)]="userZones"
                theme='bootstrap'
                [identifyBy]="'id'"
@@ -53,22 +91,31 @@
               [(autocompleteItems)]="allZones">
       </tag-input-dropdown>
     </tag-input>
+-->
 
-    <!--Bassins input-->
-    <tag-input [(ngModel)]="userBassins"
-               theme='bootstrap'
-               [identifyBy]="'gid'"
-               [displayBy]="'fullname'"
-               [autocomplete]="true"
-               placeholder="Add bassins"
-               secondaryPlaceholder="Subscribe to bassins"
-               [onlyFromAutocomplete]="true">
-      <tag-input-dropdown
-              [showDropdownIfEmpty]="true"
-              [identifyBy]="'gid'"
-              [displayBy]="'fullname'"
-              [(autocompleteItems)]="allBassins">
-      </tag-input-dropdown>
-    </tag-input>
+    <mat-card>
+      <mat-card-title>
+        Watershed
+      </mat-card-title>
+      <mat-card-content>
+        <!--Bassins input-->
+        <tag-input [(ngModel)]="userBassins"
+                   theme='bootstrap'
+                   [identifyBy]="'gid'"
+                   [displayBy]="'fullname'"
+                   [autocomplete]="true"
+                   placeholder="Add bassins"
+                   secondaryPlaceholder="Subscribe to bassins"
+                   [onlyFromAutocomplete]="true">
+          <tag-input-dropdown
+                  [showDropdownIfEmpty]="true"
+                  [identifyBy]="'gid'"
+                  [displayBy]="'fullname'"
+                  [(autocompleteItems)]="allBassins">
+          </tag-input-dropdown>
+        </tag-input>
+      </mat-card-content>
+    </mat-card>
+
   </div>
 </div>

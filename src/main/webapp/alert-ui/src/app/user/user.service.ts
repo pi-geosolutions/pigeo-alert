@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {User} from "./user";
+import {User, UserZone} from "./user";
 import {Zone} from "../zone/zone";
 import {Observable} from "rxjs/Observable";
 import {of} from "rxjs/observable/of";
@@ -10,6 +10,7 @@ import {tap} from "rxjs/operators/tap";
 import {catchError} from "rxjs/operators/catchError";
 import {ApiService} from "../common/api.service";
 import {Bassin} from "../bassin/bassin";
+import {FormArray} from "@angular/forms";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -54,6 +55,17 @@ export class UserService {
     );
   }
 
+  getFlatZones(id: number): Observable<UserZone[]> {
+    const url = `${this.usersUrl}/${id}/zones?projection=flat`;
+    return this.http.get<User>(url)
+      .map((response: any) =>
+        response._embedded ? response._embedded.userZones : response)
+      .pipe(
+        tap(_ => this.log(`fetched zone id=${id}`)),
+        catchError(this.handleError<Zone>(`getUserZone id=${id}`))
+      );
+  };
+
   /**
    * Return the zones of a user.
    * Get the user, then parse all userZones to return an array of Zones
@@ -75,6 +87,14 @@ export class UserService {
   }
 
   getUserZone(id: number): Observable<Zone> {
+    const url = `${this.userzonesUrl}/${id}/zone`;
+    return this.http.get<Zone>(url).pipe(
+      tap(_ => this.log(`fetched zone id=${id}`)),
+      catchError(this.handleError<Zone>(`getUserZone id=${id}`))
+    );
+  }
+
+  getUserZones(id: number): Observable<Zone> {
     const url = `${this.userzonesUrl}/${id}/zone`;
     return this.http.get<Zone>(url).pipe(
       tap(_ => this.log(`fetched zone id=${id}`)),
@@ -134,9 +154,16 @@ export class UserService {
     );
   }
 
-  putZones (user: User, zones: Zone[]): Observable<any> {
-    const urisList = zones.map(zone => zone.id).join('\n');
-    return this.http.put(`${this.usersUrl}/${user.id}/zones`, urisList, urisHttpOptions).pipe(
+  /**
+   * Call a custom service that remove all zones from a user then add the ones
+   * passed to the function.
+   *
+   * @param user
+   * @param zones
+   * @returns {Observable<User|any>}
+   */
+  putZones (user: User, zones: FormArray): Observable<any> {
+    return this.http.put(`${this.userzonesUrl}custom/${user.id}`, zones.value, httpOptions).pipe(
       tap(_ => this.log(`put zone for user id=${user.id}`)),
       catchError(this.handleError<User>('putZones'))
     );
