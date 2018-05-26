@@ -106,7 +106,7 @@ public class BufferRainProcessService implements ProcessService {
             for(UserZone userZone: user.getZones()) {
                 Map<Integer, Map<String, PgRasterSummary>> zoneStat = stats.get(userZone.getZone().getId());
                 if(zoneStat != null) {
-                    if(zoneStat.get(userZone.getRadius()).get("pluvio03h").getMax() > userZone.getThreshold()) {
+                    if(zoneStat.get(userZone.getRadius()).get("lastrain").getMax() > userZone.getThreshold()) {
                         BufferReportModel reportModel = new BufferReportModel();
 
                         reportModel.setName(zoneStat.get(userZone.getRadius()).get("lastrain").getName());
