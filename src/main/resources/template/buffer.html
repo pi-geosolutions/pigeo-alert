@@ -7,10 +7,17 @@
 
 <p>Dear ${report.user.firstname} ${report.user.lastname},</p>
 <p>You subscribed to some POIS that have been detected as potential warning:</p>
-<p>Eumetsat rain prevision in a buffer of 50 km: </p>
+<p>Eumetsat rain prevision : </p>
 <ul>
     <#list report.zones as zone>
-        <li><b>${zone.name}</b></li>
+        <li>
+            <b>${zone.name} </b> rised the threshold of ${zone.threshold} mm in a buffer of ${zone.radius} km
+            <p>Total rain in zone for last </p>
+            <ul>
+                <li>3 hours:     ${zone.sum03}mm</li>
+                <li>6 hours:     ${zone.sum06}mm</li>
+            </ul>
+        </li>
     </#list>
 </ul>
 

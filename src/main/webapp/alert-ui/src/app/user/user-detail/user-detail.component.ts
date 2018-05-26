@@ -125,8 +125,6 @@ export class UserDetailComponent implements OnInit {
       name: zone.zone.name
     }));
     const uzFormArray = this.fb.array(uzFGs);
-    console.log(uzFormArray);
-    uzFormArray.value.forEach(a => console.log(a.id))
     this.userForm.setControl('fzones', uzFormArray);
   }
 
