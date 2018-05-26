@@ -61,7 +61,13 @@
             </mat-list-item>
             <mat-list-item *ngFor="let userzone of fzones.controls; let i=index" [formGroupName]="i">
               <a matLine>{{ userzone.value.name }}</a>
-              <input type="number" matInput formControlName="radius">
+              <!--<input type="number" matInput formControlName="radius">-->
+                <mat-select formControlName="radius">
+                  <mat-option *ngFor="let radius of radiusChoice" [value]="radius">
+                    {{radius}}
+                  </mat-option>
+                </mat-select>
+
               <input type="number" matInput formControlName="threshold">
               <button mat-icon-button (click)="deleteUserZone(userzone.value.id)">
                 <mat-icon>delete</mat-icon>

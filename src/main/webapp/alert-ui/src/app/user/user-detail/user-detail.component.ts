@@ -28,6 +28,7 @@ export class UserDetailComponent implements OnInit {
   inputZones: Zone[];
   userForm: FormGroup;
   iterableDiffer: any;
+  radiusChoice: number[] = [30, 50];
   firstChangeCheck: boolean = false;
 
   constructor(
@@ -121,7 +122,6 @@ export class UserDetailComponent implements OnInit {
       radius: zone.radius,
       threshold: zone.threshold,
       id: zone.zone.id,
-      test: 'toto',
       name: zone.zone.name
     }));
     const uzFormArray = this.fb.array(uzFGs);
