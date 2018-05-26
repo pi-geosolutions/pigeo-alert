@@ -72,8 +72,10 @@ export class UserDetailComponent implements OnInit {
         zone: ''
       });
     });
-    forkJoin(this.getAllZones(), this.getUserZones(id))
-      .subscribe(() => this.updateInputZones());
+    setTimeout(() => {
+      forkJoin(this.getAllZones(), this.getUserZones(id))
+        .subscribe(() => this.updateInputZones());
+    }, 100);
     this.getAllBassins();
     this.getUserBassins(id);
   }
