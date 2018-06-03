@@ -12,7 +12,6 @@ import pigeo.fr.alert.dao.UserRepository;
 import pigeo.fr.alert.dao.ZoneRepository;
 import pigeo.fr.alert.domain.User;
 import pigeo.fr.alert.domain.UserZone;
-import pigeo.fr.alert.domain.Zone;
 import pigeo.fr.alert.process.buffer.BufferStats;
 import pigeo.fr.alert.process.postgis.PgRasterSummary;
 import pigeo.fr.alert.process.postgis.PgRasterSummaryRowMapper;
@@ -110,8 +109,8 @@ public class BufferRainProcessService implements ProcessService {
                         BufferReportModel reportModel = new BufferReportModel();
 
                         reportModel.setName(zoneStat.get(userZone.getRadius()).get("lastrain").getName());
-                        reportModel.setSum03(String.valueOf((int)zoneStat.get(userZone.getRadius()).get("pluvio03h").getSum()));
-                        reportModel.setSum06(String.valueOf((int)zoneStat.get(userZone.getRadius()).get("pluvio06h").getSum()));
+                        reportModel.setSum03(this.computeCumul(zoneStat.get(userZone.getRadius()).get("pluvio03h").getSum()));
+                        reportModel.setSum06(this.computeCumul(zoneStat.get(userZone.getRadius()).get("pluvio06h").getSum()));
                         reportModel.setRadius(userZone.getRadius());
                         reportModel.setThreshold(userZone.getThreshold());
                         reportModel.setId(userZone.getZone().getId());
@@ -189,5 +188,11 @@ public class BufferRainProcessService implements ProcessService {
         String sql = String.format(statSql, bufferTable, rasterTable);
         return jdbcTemplate.query(
                 sql, new PgRasterSummaryRowMapper());
+    }
+
+    private String computeCumul(final double sum)  {
+        double cumul = 20.0269 * 1000000 * sum * 0.001 /1000000;
+        return String.valueOf((int)cumul);
+
     }
 }
