@@ -11,11 +11,11 @@
     </div>
     <mat-table #table [dataSource]="dataSource">
       <ng-container matColumnDef="maj_name">
-        <mat-header-cell *matHeaderCellDef> Maj Name </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Grand bassin </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.maj_name}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="sub_name">
-        <mat-header-cell *matHeaderCellDef> Sub Name </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Bassin versant </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.sub_name}} </mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

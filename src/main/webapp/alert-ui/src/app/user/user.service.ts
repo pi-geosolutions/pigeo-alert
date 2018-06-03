@@ -108,7 +108,7 @@ export class UserService {
       .map((response: any) =>
         response._embedded ? response._embedded.bassins : response)
       .do((bassins: Bassin[]) =>
-        bassins.forEach( bassin => bassin.fullname = `${bassin.maj_name} ${bassin.sub_name}`))
+        bassins.forEach( bassin => bassin.fullname = `${bassin.maj_name} - ${bassin.sub_name}`))
       .pipe(
         tap(_ => this.log(`fetched bassins for user id=${id}`)),
         catchError(this.handleError<User>(`getUser id=${id}`))

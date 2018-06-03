@@ -31,7 +31,9 @@ export class BassinService {
       .map((response: any) =>
         response._embedded ? response._embedded.bassins : response)
       .do((bassins: Bassin[]) =>
-        bassins.forEach( bassin => bassin.fullname = `${bassin.maj_name} ${bassin.sub_name}`))
+        bassins.forEach( bassin => bassin.fullname = `${bassin.maj_name} - ${bassin.sub_name}`))
+      .map((response: any) =>
+        response.sort( (a, b) => (a.fullname < b.fullname) ? -1 : 1))
       .pipe(
         tap(bassins => this.log(`fetched bassins`)),
         catchError(this.handleError('getBassins', []))
