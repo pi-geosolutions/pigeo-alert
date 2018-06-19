@@ -20,6 +20,7 @@ import pigeo.fr.alert.report.UserZonesReport;
 import pigeo.fr.alert.report.entity.BufferReportModel;
 
 import java.sql.Types;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -192,7 +193,7 @@ public class BufferRainProcessService implements ProcessService {
 
     private String computeCumul(final double sum)  {
         double cumul = 20.0269 * 1000000 * sum * 0.001 /1000000;
-        return String.valueOf((int)cumul);
+        return String.valueOf(new DecimalFormat(".##").format(cumul));
 
     }
 }
